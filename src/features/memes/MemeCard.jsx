@@ -5,7 +5,7 @@ import MemeActions from "./MemeActions";
 
 function MemeCard() {
   return (
-    <div className="w-10/12 m-auto">
+    <div className="md:max-w-[600px] sm:w-10/12 w-full m-auto">
       <Card>
         <DisplayMemeAuthor />
         <div className="py-3 m-auto">
