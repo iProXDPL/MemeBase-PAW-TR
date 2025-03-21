@@ -1,4 +1,5 @@
 import MainPage from "../pages/MainPage";
+import Footer from "./Footer";
 import Header from "./Header";
 
 function AppLayout() {
@@ -7,6 +8,7 @@ function AppLayout() {
       <Header />
       {/* Poniżej placeholder dla <Outlet /> */}
       <MainPage />
+      <Footer />
     </div>
   );
 }

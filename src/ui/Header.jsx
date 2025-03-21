@@ -1,14 +1,11 @@
 import { List, User, X } from "@phosphor-icons/react";
 import Button from "./Button";
+import Logo from "./Logo";
 
 function Header() {
   return (
     <div className="bg-violet-800 text-zinc-100 flex items-center justify-between py-4 px-6">
-      <p className="md:text-3xl text-2xl font-semibold">
-        <a href="#">
-          Meme<span className="text-lime-500">Base</span>
-        </a>
-      </p>
+      <Logo />
       <ul className="flex items-center gap-8 ">
         <li className="hidden md:block text-xl hover:text-zinc-400 transition-colors duration-300">
           <a href="#">Strona Główna</a>
