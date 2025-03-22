@@ -4,7 +4,7 @@ import Header from "./Header";
 
 function AppLayout() {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Header />
       {/* Poniżej placeholder dla <Outlet /> */}
       <MainPage />

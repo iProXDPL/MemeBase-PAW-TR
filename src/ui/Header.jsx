@@ -1,44 +1,36 @@
-import { List, User, X } from "@phosphor-icons/react";
-import Button from "./Button";
+import { List, X } from "@phosphor-icons/react";
 import Logo from "./Logo";
+import HeaderNavList from "./HeaderNavList";
+import { useState } from "react";
 
 function Header() {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
   return (
-    <div className="bg-violet-800 text-zinc-100 flex items-center justify-between py-4 px-6">
+    <div className="relative flex items-center justify-between bg-violet-800 px-6 py-4 text-zinc-100 md:gap-2">
       <Logo />
-      <ul className="flex items-center gap-8 ">
-        <li className="hidden md:block text-xl hover:text-zinc-400 transition-colors duration-300">
-          <a href="#">Strona Główna</a>
-        </li>
-        <li className="hidden md:block text-xl hover:text-zinc-400 transition-colors duration-300">
-          <a href="#">Losowy Mem</a>
-        </li>
-        <li className="hidden md:block text-xl hover:text-zinc-400 transition-colors duration-300">
-          <a href="#">Rankingi</a>
-        </li>
-        <li className="hidden md:block text-xl">
-          <Button color="green">Logowanie</Button>
-        </li>
-        <li className="hidden">
-          <User
-            tabIndex="0"
-            role="button"
-            aria-label="Panel użytkownika"
-            size={32}
-          />
-        </li>
-        <li
-          className="md:hidden cursor-pointer"
+      <HeaderNavList isMobileNavOpen={isMobileNavOpen} />
+      <div className="flex gap-3 text-3xl md:hidden">
+        <div
+          className={`${
+            isMobileNavOpen ? "hidden" : ""
+          } z-10 cursor-pointer md:hidden`}
           tabIndex="0"
           role="button"
           aria-label="Otwórz menu"
+          onClick={() => setIsMobileNavOpen(true)}
         >
-          <List size={32} />
-        </li>
-        <li className="hidden" role="button" aria-label="Zamknij menu">
-          <X size={32} />
-        </li>
-      </ul>
+          <List />
+        </div>
+        <div
+          className={`${!isMobileNavOpen ? "hidden" : ""} z-10 cursor-pointer`}
+          role="button"
+          aria-label="Zamknij menu"
+          onClick={() => setIsMobileNavOpen(false)}
+        >
+          <X />
+        </div>
+      </div>
     </div>
   );
 }
