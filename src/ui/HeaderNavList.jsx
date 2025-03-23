@@ -1,5 +1,6 @@
 import { User } from "@phosphor-icons/react";
 import Button from "./Button";
+import { NavLink } from "react-router";
 
 function HeaderNavList({ isMobileNavOpen }) {
   return (
@@ -9,13 +10,14 @@ function HeaderNavList({ isMobileNavOpen }) {
       } `}
     >
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
-        <a href="#">Strona Główna</a>
+        <NavLink to="/">Strona Główna</NavLink>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
         <a href="#">Losowy Mem</a>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
-        <a href="#">Rankingi</a>
+        {/* <a href="#">Rankingi</a> */}
+        <NavLink to="ranking">Rankingi</NavLink>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
         <a href="#">Publikuj</a>
