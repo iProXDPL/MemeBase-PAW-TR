@@ -1,5 +1,11 @@
+import BestUsers from "../features/ranking/BestUsers";
+
 function Ranking() {
-  return <div>Ranking</div>;
+  return (
+    <div>
+      <BestUsers />
+    </div>
+  );
 }
 
 export default Ranking;
