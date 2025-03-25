@@ -13,7 +13,7 @@ function HeaderNavList({ isMobileNavOpen }) {
         <NavLink to="/">Strona Główna</NavLink>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
-        <a href="#">Losowy Mem</a>
+        <a href="/losowymem">Losowy Mem</a>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
         {/* <a href="#">Rankingi</a> */}
@@ -23,8 +23,9 @@ function HeaderNavList({ isMobileNavOpen }) {
         <a href="#">Publikuj</a>
       </li>
       <li className="min-[890px]:block">
+        <NavLink to="logowanie">
         <Button color="green">Logowanie</Button>
-
+        </NavLink>
         {/* Dla zalogowanego użytkownika ⬇️*/}
         {/* <User tabIndex="0" role="button" aria-label="Panel użytkownika" /> */}
       </li>
