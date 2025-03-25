@@ -9,7 +9,10 @@ function Header() {
   return (
     <div className="relative flex items-center justify-between bg-violet-800 px-6 py-4 text-zinc-100 min-[890px]:gap-2">
       <Logo />
-      <HeaderNavList isMobileNavOpen={isMobileNavOpen} />
+      <HeaderNavList
+        isMobileNavOpen={isMobileNavOpen}
+        onClick={setIsMobileNavOpen}
+      />
       <div className="flex gap-3 text-3xl min-[890px]:hidden">
         <div
           className={`${isMobileNavOpen ? "hidden" : ""} z-10 cursor-pointer`}

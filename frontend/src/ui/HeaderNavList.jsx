@@ -2,7 +2,7 @@ import { User } from "@phosphor-icons/react";
 import Button from "./Button";
 import { NavLink } from "react-router";
 
-function HeaderNavList({ isMobileNavOpen }) {
+function HeaderNavList({ isMobileNavOpen, onClick }) {
   return (
     <ul
       className={`absolute top-0 right-0 flex h-dvh w-dvw flex-col items-center justify-center gap-8 space-y-7 bg-violet-800 text-center text-2xl duration-300 min-[890px]:static min-[890px]:top-auto min-[890px]:h-auto min-[890px]:w-auto min-[890px]:translate-none min-[890px]:flex-row min-[890px]:space-y-0 min-[890px]:bg-transparent min-[890px]:text-xl ${
@@ -10,21 +10,26 @@ function HeaderNavList({ isMobileNavOpen }) {
       } `}
     >
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
-        <NavLink to="/">Strona Główna</NavLink>
+        <NavLink to="/" onClick={() => onClick(false)}>
+          Strona Główna
+        </NavLink>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
-        <a href="/losowymem">Losowy Mem</a>
+        <NavLink to="/losowymem" onClick={() => onClick(false)}>
+          Losowy
+        </NavLink>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
-        {/* <a href="#">Rankingi</a> */}
-        <NavLink to="ranking">Rankingi</NavLink>
+        <NavLink to="/ranking" onClick={() => onClick(false)}>
+          Rankingi
+        </NavLink>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
         <a href="#">Publikuj</a>
       </li>
       <li className="min-[890px]:block">
-        <NavLink to="logowanie">
-        <Button color="green">Logowanie</Button>
+        <NavLink to="/logowanie" onClick={() => onClick(false)}>
+          <Button color="green">Logowanie</Button>
         </NavLink>
         {/* Dla zalogowanego użytkownika ⬇️*/}
         {/* <User tabIndex="0" role="button" aria-label="Panel użytkownika" /> */}
