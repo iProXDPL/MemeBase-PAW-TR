@@ -1,18 +1,21 @@
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
+import ButtonNextPrevPage from "./ButtonNextPrevPage";
 
 function MemePageNavigation() {
   return (
-    <div className="flex items-center justify-between">
-      <button>
-        <ArrowLeft />
-      </button>
-      <div className="flex items-center justify-center">
-        <input type="number" min="1" className="bg-zinc-400 p-4" />
-        <span> / 7</span>
+    <div className="mt-4 flex justify-between text-xs text-zinc-800 sm:mx-auto sm:mt-6 sm:w-10/12 sm:text-xl md:max-w-[600px]">
+      <ButtonNextPrevPage to="prev" />
+      <div className="flex items-center justify-center gap-2 sm:gap-4">
+        <input
+          type="number"
+          min="1"
+          value="2"
+          placeholder="1"
+          className="w-8 [appearance:textfield] rounded-lg border-1 border-violet-800 px-1 py-2 text-center sm:w-12 sm:py-3 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        />
+        <span>/</span>
+        <span>7</span>
       </div>
-      <button>
-        <ArrowRight />
-      </button>
+      <ButtonNextPrevPage to="next" />
     </div>
   );
 }

@@ -13,7 +13,6 @@ function App() {
         <Route element={<AppLayout />}>
           <Route index element={<MainPage />} />
           <Route path="ranking" element={<Ranking />} />
-          {/* Poniżej przykładowa ścieżka nawigująca do widoku z logowaniem (nastepnie patrz plik AppLayout.jsx), "element" oznacza jaki komponent ma być renderowany na tej ścieżce (w tym przypadku komponent z logowaniem) */}
           <Route path="logowanie" element={<LoginAuth />} />
           <Route path="rejestracja" element={<Registration />} />
           <Route path="losowymem" element={<RandomMeme />} />
