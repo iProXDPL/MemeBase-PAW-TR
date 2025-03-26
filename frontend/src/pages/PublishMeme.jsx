@@ -5,7 +5,10 @@ import Button from "../ui/Button";
 
 function PublishMeme() {
   return (
-    <div className="m-auto mt-12 mb-20 px-6 min-[1100px]:max-w-[900px] md:w-10/12">
+    <form
+      action="POST"
+      className="m-auto mt-12 mb-20 px-6 min-[1100px]:max-w-[900px] md:w-10/12"
+    >
       <SectionUndelinedTitle>Publikuj mema</SectionUndelinedTitle>
       <Card>
         <div className="mb-4 flex flex-col">
@@ -26,7 +29,7 @@ function PublishMeme() {
           <Button color="violet">Publikuj</Button>
         </div>
       </Card>
-    </div>
+    </form>
   );
 }
 
