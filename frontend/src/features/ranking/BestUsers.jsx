@@ -1,16 +1,17 @@
 import RankingTable from "./RankingTable";
 import RankingTitle from "./RankingTitle";
 import { Ranking } from "@phosphor-icons/react";
+import RankingWrapper from "./RankingWrapper";
 
 function BestUsers() {
   return (
-    <div className="px-6 py-4 text-zinc-800">
+    <RankingWrapper>
       <RankingTitle>
-        <h2>Ściana Sławy</h2>
+        <h3>Ściana Sławy</h3>
         <Ranking />
       </RankingTitle>
       <RankingTable />
-    </div>
+    </RankingWrapper>
   );
 }
 

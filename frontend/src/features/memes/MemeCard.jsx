@@ -4,13 +4,13 @@ import MemeActions from "./MemeActions";
 
 function MemeCard({ textMeme, memeUrl }) {
   return (
-    <div className="md:max-w-[600px] sm:w-10/12 w-full m-auto">
+    <div className="m-auto w-full sm:w-10/12 md:max-w-[500px]">
       <Card>
         <DisplayMemeAuthor />
-        <div className="sm:py-4 py-2 m-auto">
+        <div className="m-auto py-4 sm:py-6">
           <img src={memeUrl} className="m-auto" />
         </div>
-        <p className="sm:text-sm text-xs text-zinc-800 text-center mb-5 mt-1 font-medium">
+        <p className="mt-1 mb-5 text-center text-xs font-medium text-zinc-700 sm:text-sm">
           {textMeme}
         </p>
         <MemeActions />
