@@ -5,9 +5,9 @@ import { NavLink } from "react-router";
 function HeaderNavList({ isMobileNavOpen, onClick }) {
   return (
     <ul
-      className={`absolute top-0 right-0 flex h-dvh w-dvw flex-col items-center justify-center gap-8 space-y-7 bg-violet-800 text-center text-2xl duration-300 min-[890px]:static min-[890px]:top-auto min-[890px]:h-auto min-[890px]:w-auto min-[890px]:translate-none min-[890px]:flex-row min-[890px]:space-y-0 min-[890px]:bg-transparent min-[890px]:text-xl ${
+      className={`fixed top-0 right-0 flex h-dvh w-dvw flex-col items-center justify-center gap-8 space-y-7 bg-violet-900 text-center text-2xl duration-300 min-[890px]:static min-[890px]:top-auto min-[890px]:h-auto min-[890px]:w-auto min-[890px]:translate-none min-[890px]:flex-row min-[890px]:space-y-0 min-[890px]:bg-transparent min-[890px]:text-xl ${
         !isMobileNavOpen ? "translate-x-full" : ""
-      } `}
+      }`}
     >
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
         <NavLink to="/" onClick={() => onClick(false)}>
@@ -25,7 +25,9 @@ function HeaderNavList({ isMobileNavOpen, onClick }) {
         </NavLink>
       </li>
       <li className="transition-colors duration-300 hover:text-zinc-400 min-[890px]:block">
-        <a href="#">Publikuj</a>
+        <NavLink to="/publikuj" onClick={() => onClick(false)}>
+          Publikuj
+        </NavLink>
       </li>
       <li className="min-[890px]:block">
         <NavLink to="/logowanie" onClick={() => onClick(false)}>

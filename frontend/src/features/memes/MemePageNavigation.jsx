@@ -2,7 +2,7 @@ import ButtonNextPrevPage from "./ButtonNextPrevPage";
 
 function MemePageNavigation() {
   return (
-    <div className="mt-4 flex justify-between text-xs text-zinc-800 sm:mx-auto sm:mt-6 sm:w-10/12 sm:text-xl md:max-w-[600px]">
+    <div className="mt-4 flex justify-between text-xs text-zinc-800 sm:mx-auto sm:mt-6 sm:w-10/12 sm:text-xl md:max-w-[500px]">
       <ButtonNextPrevPage to="prev" />
       <div className="flex items-center justify-center gap-2 sm:gap-4">
         <input

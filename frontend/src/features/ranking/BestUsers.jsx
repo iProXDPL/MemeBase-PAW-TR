@@ -1,15 +1,15 @@
 import RankingTable from "./RankingTable";
-import RankingTitle from "./RankingTitle";
 import { Ranking } from "@phosphor-icons/react";
 import RankingWrapper from "./RankingWrapper";
+import SectionUndelinedTitle from "../../ui/SectionUndelinedTitle";
 
 function BestUsers() {
   return (
     <RankingWrapper>
-      <RankingTitle>
+      <SectionUndelinedTitle>
         <h3>Ściana Sławy</h3>
         <Ranking />
-      </RankingTitle>
+      </SectionUndelinedTitle>
       <RankingTable />
     </RankingWrapper>
   );

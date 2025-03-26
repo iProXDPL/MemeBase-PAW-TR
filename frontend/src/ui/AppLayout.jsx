@@ -4,9 +4,11 @@ import Header from "./Header";
 
 function AppLayout() {
   return (
-    <div className="overflow-x-hidden">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
       <Header />
-      <Outlet />
+      <main className="flex-grow">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

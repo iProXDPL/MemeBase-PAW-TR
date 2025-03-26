@@ -5,6 +5,7 @@ import Ranking from "./pages/Ranking";
 import LoginAuth from "./pages/LoginAuth";
 import Registration from "./pages/Registration";
 import RandomMeme from "./pages/RandomMeme";
+import PublishMeme from "./pages/PublishMeme";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="logowanie" element={<LoginAuth />} />
           <Route path="rejestracja" element={<Registration />} />
           <Route path="losowymem" element={<RandomMeme />} />
+          <Route path="publikuj" element={<PublishMeme />} />
         </Route>
       </Routes>
     </BrowserRouter>

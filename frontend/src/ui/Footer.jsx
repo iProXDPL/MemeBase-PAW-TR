@@ -3,31 +3,31 @@ import Logo from "./Logo";
 
 function Footer() {
   return (
-    <div className="bg-violet-800 text-zinc-100 py-4 sm:py-6 px-6 md:pt-8 md:pb-12 mt-8">
-      <div className="sm:grid sm:grid-cols-4 md:max-w-11/12 m-auto">
+    <div className="bg-violet-800 px-6 py-4 text-zinc-100 sm:py-6 md:pt-8 md:pb-12">
+      <div className="m-auto sm:grid sm:grid-cols-4 md:max-w-11/12">
         <div className="text-center">
           <Logo type="small" />
-          <p className="text-xs md:text-sm text-zinc-100 pt-2">Zobacz także</p>
-          <div className="flex py-2 space-x-2 justify-center text-xl">
+          <p className="pt-2 text-xs text-zinc-100 md:text-sm">Zobacz także</p>
+          <div className="flex justify-center space-x-2 py-2 text-xl">
             <a
               href="#"
-              className="hover:text-zinc-400 transition-colors duration-300"
+              className="transition-colors duration-300 hover:text-zinc-400"
             >
               <XLogo />
             </a>
             <a
               href="#"
-              className="hover:text-zinc-400 transition-colors duration-300"
+              className="transition-colors duration-300 hover:text-zinc-400"
             >
               <FacebookLogo />
             </a>
           </div>
         </div>
-        <div className="text-xs md:text-sm text-center pt-6 sm:py-2">
-          <ul className="lg:space-y-3 space-y-2">
+        <div className="pt-6 text-center text-xs sm:py-2 md:text-sm">
+          <ul className="space-y-2 lg:space-y-3">
             <li>
               <a
-                className="hover:text-zinc-400 transition-colors duration-300"
+                className="transition-colors duration-300 hover:text-zinc-400"
                 href="#"
               >
                 Strona Główna
@@ -35,7 +35,7 @@ function Footer() {
             </li>
             <li>
               <a
-                className="hover:text-zinc-400 transition-colors duration-300"
+                className="transition-colors duration-300 hover:text-zinc-400"
                 href="#"
               >
                 Losowy Mem
@@ -43,7 +43,7 @@ function Footer() {
             </li>
             <li>
               <a
-                className="hover:text-zinc-400 transition-colors duration-300"
+                className="transition-colors duration-300 hover:text-zinc-400"
                 href="#"
               >
                 Rankingi
@@ -51,11 +51,11 @@ function Footer() {
             </li>
           </ul>
         </div>
-        <div className="text-xs md:text-sm text-center pt-6 sm:py-2">
-          <ul className="lg:space-y-3 space-y-2">
+        <div className="pt-6 text-center text-xs sm:py-2 md:text-sm">
+          <ul className="space-y-2 lg:space-y-3">
             <li>
               <a
-                className="hover:text-zinc-400 transition-colors duration-300"
+                className="transition-colors duration-300 hover:text-zinc-400"
                 href="#"
               >
                 Konto
@@ -63,7 +63,7 @@ function Footer() {
             </li>
             <li>
               <a
-                className="hover:text-zinc-400 transition-colors duration-300"
+                className="transition-colors duration-300 hover:text-zinc-400"
                 href="#"
               >
                 Publikuj Mema
@@ -71,7 +71,7 @@ function Footer() {
             </li>
             <li>
               <a
-                className="hover:text-zinc-400 transition-colors duration-300"
+                className="transition-colors duration-300 hover:text-zinc-400"
                 href="#"
               >
                 Regulamin
@@ -79,8 +79,8 @@ function Footer() {
             </li>
           </ul>
         </div>
-        <div className="text-xs md:text-sm text-center py-6 sm:py-2">
-          <span className="cursor-pointer hover:text-zinc-400 transition-colors duration-300">
+        <div className="py-6 text-center text-xs sm:py-2 md:text-sm">
+          <span className="cursor-pointer transition-colors duration-300 hover:text-zinc-400">
             Do Góry &uarr;
           </span>
         </div>

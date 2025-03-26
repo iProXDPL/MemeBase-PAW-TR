@@ -24,7 +24,7 @@ function Header() {
           <List />
         </div>
         <div
-          className={`${!isMobileNavOpen ? "hidden" : ""} z-10 cursor-pointer`}
+          className={`${!isMobileNavOpen ? "hidden" : ""} fixed top-5 right-5 z-10 cursor-pointer`}
           role="button"
           aria-label="Zamknij menu"
           onClick={() => setIsMobileNavOpen(false)}
