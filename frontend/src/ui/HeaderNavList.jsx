@@ -30,9 +30,9 @@ function HeaderNavList({ isMobileNavOpen, onClick }) {
         </NavLink>
       </li>
       <li className="min-[890px]:block">
-        <NavLink to="/logowanie" onClick={() => onClick(false)}>
-          <Button color="green">Logowanie</Button>
-        </NavLink>
+        <Button to="logowanie" onClick={onClick}>
+          Logowanie
+        </Button>
         {/* Dla zalogowanego użytkownika ⬇️*/}
         {/* <User tabIndex="0" role="button" aria-label="Panel użytkownika" /> */}
       </li>

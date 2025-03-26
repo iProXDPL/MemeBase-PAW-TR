@@ -15,12 +15,12 @@ function PublishMeme() {
           <label className="pb-2 text-zinc-600">Opis</label>
           <textarea
             placeholder="Opis"
-            className="h-32 rounded-lg bg-white p-2 text-base text-zinc-700"
+            className="h-32 rounded-lg bg-white p-2 text-base text-zinc-700 focus:ring-3 focus:ring-violet-800 focus:ring-offset-2 focus:outline-none"
           />
         </div>
-        <button className="flex cursor-pointer items-center gap-2 border-b-1 border-violet-900 text-violet-900 hover:text-violet-950">
+        <button className="flex cursor-pointer items-center gap-2 border-b-1 border-violet-900 text-violet-900 hover:text-violet-950 focus:rounded-md focus:ring-3 focus:ring-violet-800 focus:ring-offset-2 focus:outline-none">
           <UploadSimple />
-          <label htmlFor="chooseFile" className="cursor-pointer">
+          <label htmlFor="chooseFile  " className="cursor-pointer">
             Wybierz mema
           </label>
           <input type="file" id="chooseFile" className="hidden" />
