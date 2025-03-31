@@ -12,7 +12,10 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Połączono z MongoDB (mem-db)'))
   .catch(err => console.error('Błąd połączenia z MongoDB:', err));
 
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./api/auth/authRoutes');
+const postRoutes = require('./api/posts/post.routes');
+
 app.use('/api/auth', authRoutes);
+app.use('/api/posts', postRoutes);
 
 module.exports = app;
