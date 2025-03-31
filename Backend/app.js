@@ -18,4 +18,11 @@ const postRoutes = require('./api/posts/post.routes');
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
 module.exports = app;
