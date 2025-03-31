@@ -1,4 +1,5 @@
-import Button from "../../ui/Button";
+import { NavLink } from "react-router";
+
 function LoginCard() {
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -23,9 +24,9 @@ function LoginCard() {
           </div>
           <div className="mb-4 text-sm text-gray-600">
             <span className="text-gray-500">Nie masz konta? </span>
-            <a href="/rejestracja" className="text-blue-500">
+            <NavLink to="/rejestracja" className="text-blue-500">
               Zarejestruj się
-            </a>
+            </NavLink>
           </div>
           {/*
             <div className="text-sm text-gray-600 mb-4">

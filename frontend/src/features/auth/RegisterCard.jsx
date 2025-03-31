@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 function RegisterCard() {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -38,7 +40,7 @@ function RegisterCard() {
             </div>
             <div className="text-sm text-gray-600 mb-4">
               <span className="text-gray-500">Masz już konto? </span>
-              <a href="/logowanie" className="text-blue-500">Zaloguj się</a>
+              <NavLink to="/logowanie" className="text-blue-500">Zaloguj się</NavLink>
             </div>
             <button className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
               Zarejestruj się
