@@ -12,7 +12,8 @@ function MainPage() {
       />
       <MemeCard memeUrl={memeUrl2} />
       <MemeCard memeUrl={memeUrl1} />
-      <MemePageNavigation />
+      {/* FIXME: */}
+      {/* <MemePageNavigation /> */}
     </div>
   );
 }

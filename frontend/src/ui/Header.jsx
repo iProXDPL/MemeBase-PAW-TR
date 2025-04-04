@@ -1,10 +1,33 @@
 import { List, X } from "@phosphor-icons/react";
 import Logo from "./Logo";
 import HeaderNavList from "./HeaderNavList";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Header() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [user, setUser] = useState("");
+
+  useEffect(function () {
+    console.log("useeffect");
+    async function user() {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch("http://localhost:5001/api/auth/user", {
+          method: "GET",
+          headers: { token: token },
+        });
+
+        const data = await response.json();
+
+        setUser(data.user);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+
+    user();
+  }, []);
 
   return (
     <div className="relative flex items-center justify-between bg-violet-800 px-6 py-4 text-zinc-100 min-[890px]:gap-2">
@@ -12,6 +35,7 @@ function Header() {
       <HeaderNavList
         isMobileNavOpen={isMobileNavOpen}
         onClick={setIsMobileNavOpen}
+        user={user}
       />
       <div className="flex gap-3 text-3xl min-[890px]:hidden">
         <div
