@@ -1,1 +1,0 @@
-# MemeBase-PAW-TR
