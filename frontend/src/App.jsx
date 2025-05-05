@@ -6,6 +6,7 @@ import LoginAuth from "./pages/LoginAuth";
 import Registration from "./pages/Registration";
 import RandomMeme from "./pages/RandomMeme";
 import PublishMeme from "./pages/PublishMeme";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
 
 function App() {
   return (
@@ -17,7 +18,13 @@ function App() {
           <Route path="logowanie" element={<LoginAuth />} />
           <Route path="rejestracja" element={<Registration />} />
           <Route path="losowymem" element={<RandomMeme />} />
-          <Route path="publikuj" element={<PublishMeme />} />
+          <Route
+            element={
+              <ProtectedRoute isAllowed={false} redirectPath="logowanie" />
+            }
+          >
+            <Route path="publikuj" element={<PublishMeme />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
