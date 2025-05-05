@@ -8,7 +8,6 @@ function Header() {
   const [user, setUser] = useState("");
 
   useEffect(function () {
-    console.log("useeffect");
     async function user() {
       try {
         const token = localStorage.getItem("token");
