@@ -9,6 +9,8 @@ import PublishMeme from "./pages/PublishMeme";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
 
 function App() {
+  const isUserLogged = localStorage.getItem("token");
+
   return (
     <BrowserRouter>
       <Routes>
@@ -20,7 +22,10 @@ function App() {
           <Route path="losowymem" element={<RandomMeme />} />
           <Route
             element={
-              <ProtectedRoute isAllowed={false} redirectPath="logowanie" />
+              <ProtectedRoute
+                isAllowed={!!isUserLogged}
+                redirectPath="logowanie"
+              />
             }
           >
             <Route path="publikuj" element={<PublishMeme />} />
