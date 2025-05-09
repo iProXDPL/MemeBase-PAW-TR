@@ -78,6 +78,7 @@ function useMemeContext() {
 
   async function createMeme(newMeme) {
     dispatch({ type: REDUCER_ACTION_TYPE.LOADING });
+    const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("title", newMeme.title);
     formData.append("file", newMeme.file);
@@ -89,7 +90,7 @@ function useMemeContext() {
       // FIXME: Wait for backend endpoint
       const res = await axios.post(`${BASE_URL}/posts/`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       });
       const { data } = res;
