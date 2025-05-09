@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 
 function Button({ color = "green", to, onClick, children }) {
-  //TODO: poprawić wylączanie nawigacji
   if (to)
     return (
       <Link
