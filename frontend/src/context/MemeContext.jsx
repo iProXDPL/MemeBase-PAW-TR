@@ -1,4 +1,10 @@
-import { createContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+} from "react";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:5001/api";
@@ -7,8 +13,11 @@ const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
   REJECTED: "REJECTED",
   CREATED: "CREATED",
+  DELETED: "DELETED",
   MEMES_LOADED: "MEMES_LOADED",
   FAKE_LOADED: "FAKE_LOADED",
+  DELETE_MODAL_VISIBLE: "DELETE_MODAL_VISIBLE",
+  DELETE_MODAL_CLOSED: "DELETE_MODAL_CLOSED",
 };
 
 const initialMemeState = {
@@ -16,6 +25,7 @@ const initialMemeState = {
   isLoading: false,
   currentMeme: {},
   error: "",
+  isDeleteMemeModal: false,
 };
 
 function memeReducer(state, action) {
@@ -41,8 +51,20 @@ function memeReducer(state, action) {
       return { ...state, isLoading: false, error: action.payload };
     }
 
+    case REDUCER_ACTION_TYPE.DELETED: {
+      return { ...state, isLoading: false, isDeleteMemeModal: false };
+    }
+
     case REDUCER_ACTION_TYPE.FAKE_LOADED: {
       return { ...state, isLoading: false };
+    }
+
+    case REDUCER_ACTION_TYPE.DELETE_MODAL_VISIBLE: {
+      return { ...state, isDeleteMemeModal: true, currentMeme: action.payload };
+    }
+
+    case REDUCER_ACTION_TYPE.DELETE_MODAL_CLOSED: {
+      return { ...state, isDeleteMemeModal: false };
     }
 
     default:
@@ -51,33 +73,33 @@ function memeReducer(state, action) {
 }
 
 function useMemeContext() {
-  const [{ memes, isLoading, currentMeme, error }, dispatch] = useReducer(
-    memeReducer,
-    initialMemeState,
-  );
+  const [
+    { memes, isLoading, currentMeme, error, isDeleteMemeModal },
+    dispatch,
+  ] = useReducer(memeReducer, initialMemeState);
 
-  useEffect(function () {
-    async function fetchMemes() {
-      console.log("pobieranie memów");
-      dispatch({ type: REDUCER_ACTION_TYPE.LOADING });
-      try {
-        const res = await axios.get(`${BASE_URL}/posts/`);
-        const { data } = res;
+  const REDUCER_ACTIONS = useMemo(() => REDUCER_ACTION_TYPE, []);
 
-        dispatch({ type: REDUCER_ACTION_TYPE.MEMES_LOADED, payload: data });
-      } catch (err) {
-        dispatch({
-          type: REDUCER_ACTION_TYPE.REJECTED,
-          payload: `Wystąpił błąd podczas ładowania memów ${err.response.data.error}`,
-        });
-      }
+  const fetchMemes = useCallback(async () => {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    try {
+      const res = await axios.get(`${BASE_URL}/posts/`);
+      const { data } = res;
+      dispatch({ type: REDUCER_ACTIONS.MEMES_LOADED, payload: data });
+    } catch (err) {
+      dispatch({
+        type: REDUCER_ACTIONS.REJECTED,
+        payload: `Wystąpił błąd podczas ładowania memów ${err.response?.data?.error || err.message}`,
+      });
     }
+  }, [REDUCER_ACTIONS]);
 
+  useEffect(() => {
     fetchMemes();
-  }, []);
+  }, [fetchMemes]);
 
   async function createMeme(newMeme) {
-    dispatch({ type: REDUCER_ACTION_TYPE.LOADING });
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
     const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("title", newMeme.title);
@@ -88,33 +110,83 @@ function useMemeContext() {
       );
 
       // FIXME: Wait for backend endpoint
-      const res = await axios.post(`${BASE_URL}/posts/`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      // const res = await axios.post(`${BASE_URL}/posts/`, formData, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
+      const res = await axios.post(
+        `${BASE_URL}/posts/`,
+        {
+          title: "To jest tytuł memea",
+          imageUrl: "To jest url mema",
+          author: "681907e23eda1f28a0e59650",
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       const { data } = res;
       console.log(data.message);
       console.log("Mem utworzony");
-      dispatch({ type: REDUCER_ACTION_TYPE.FAKE_LOADED });
+      await fetchMemes();
+      dispatch({ type: REDUCER_ACTIONS.FAKE_LOADED });
       // FIXME: Wait for backend endpoint
       // dispatch({ type: REDUCER_ACTION_TYPE.CREATED, payload: data });
     } catch (err) {
       dispatch({
-        type: REDUCER_ACTION_TYPE.REJECTED,
+        type: REDUCER_ACTIONS.REJECTED,
         payload: `Wystąpił problem z publikowaniem mema: ${err.response.data.error}`,
       });
     }
   }
 
-  return { memes, isLoading, currentMeme, createMeme, error };
+  async function deleteMeme(memeId) {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    const token = localStorage.getItem("token");
+    try {
+      const res = await axios.delete(`${BASE_URL}/posts/${memeId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { data } = res;
+
+      if (data.status !== "success")
+        throw new Error("Nie udało się usunąć mema");
+
+      await fetchMemes();
+
+      dispatch({ type: REDUCER_ACTION_TYPE.DELETED });
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  return {
+    memes,
+    isLoading,
+    currentMeme,
+    createMeme,
+    error,
+    isDeleteMemeModal,
+    dispatch,
+    deleteMeme,
+    REDUCER_ACTIONS,
+  };
 }
 
 const initMemeContextState = {
   memes: [],
+  currentMeme: {},
   isLoading: false,
+  isDeleteModal: false,
   error: "",
-  createMeme: () => {},
+  deleteMeme: async () => {},
+  createMeme: async () => {},
   dispatch: () => {},
   REDUCER_ACTIONS: REDUCER_ACTION_TYPE,
 };

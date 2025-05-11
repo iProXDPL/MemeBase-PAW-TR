@@ -25,7 +25,11 @@ function PublishMeme() {
 
     setIsFileError(false);
     setTitleError("");
+
     createMeme({ title, file });
+
+    setTitle("");
+    setFile(null);
   }
 
   return (
