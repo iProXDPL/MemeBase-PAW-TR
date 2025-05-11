@@ -22,6 +22,8 @@ exports.user = async (req, res, next) => {
 
     const currentUser = await User.findById(decoded.id);
 
+    currentUser.password = undefined;
+
     if (!currentUser)
       res
         .status(401)
