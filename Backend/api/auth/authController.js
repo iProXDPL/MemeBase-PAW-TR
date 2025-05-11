@@ -10,7 +10,7 @@ const createToken = (user) => {
 
 exports.user = async (req, res, next) => {
   try {
-    const token = req.headers["token"];
+    const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return res.status(200).json({
@@ -69,5 +69,6 @@ exports.login = async (req, res) => {
   if (!isMatch) return res.status(400).json({ error: "Nieprawidłowe hasło" });
 
   const token = createToken(user);
-  res.status(201).json({ token });
+  user.password = undefined;
+  res.status(201).json({ token, data: { user } });
 };

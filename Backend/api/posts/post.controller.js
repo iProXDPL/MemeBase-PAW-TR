@@ -1,21 +1,24 @@
-const Post = require('./post.model');
+const Post = require("./post.model");
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('author', 'username');
+    const posts = await Post.find().populate("author", "username role");
     res.json(posts);
   } catch (err) {
-    res.status(500).json({ error: 'Błąd pobierania postów' });
+    res.status(500).json({ error: "Błąd pobierania postów" });
   }
 };
 
 exports.getPostById = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate('author', 'username');
-    if (!post) return res.status(404).json({ error: 'Post nie istnieje' });
+    const post = await Post.findById(req.params.id).populate(
+      "author",
+      "username"
+    );
+    if (!post) return res.status(404).json({ error: "Post nie istnieje" });
     res.json(post);
   } catch (err) {
-    res.status(500).json({ error: 'Błąd pobierania postu' });
+    res.status(500).json({ error: "Błąd pobierania postu" });
   }
 };
 
@@ -26,7 +29,7 @@ exports.createPost = async (req, res) => {
     await post.save();
     res.status(201).json(post);
   } catch (err) {
-    res.status(400).json({ error: 'Nie udało się utworzyć posta' });
+    res.status(400).json({ error: "Nie udało się utworzyć posta" });
   }
 };
 
@@ -38,19 +41,19 @@ exports.updatePost = async (req, res) => {
       { title, imageUrl },
       { new: true }
     );
-    if (!post) return res.status(404).json({ error: 'Post nie istnieje' });
+    if (!post) return res.status(404).json({ error: "Post nie istnieje" });
     res.json(post);
   } catch (err) {
-    res.status(400).json({ error: 'Nie udało się zaktualizować posta' });
+    res.status(400).json({ error: "Nie udało się zaktualizować posta" });
   }
 };
 
 exports.deletePost = async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
-    if (!post) return res.status(404).json({ error: 'Post nie istnieje' });
-    res.json({ message: 'Post usunięty' });
+    if (!post) return res.status(404).json({ error: "Post nie istnieje" });
+    res.json({ status: "success", message: "Post usunięty" });
   } catch (err) {
-    res.status(400).json({ error: 'Nie udało się usunąć posta' });
+    res.status(400).json({ error: "Nie udało się usunąć posta" });
   }
 };
