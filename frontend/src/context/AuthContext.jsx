@@ -100,6 +100,7 @@ function useAuthContext() {
   }
 
   function logout() {
+    localStorage.removeItem("token");
     dispatch({ type: REDUCER_ACTION_TYPE.LOGGED_OUT });
   }
 
