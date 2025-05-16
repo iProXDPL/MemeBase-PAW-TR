@@ -106,10 +106,6 @@ function useMemeContext() {
     formData.append("description", newMeme.title);
     formData.append("image", newMeme.file);
     try {
-      console.log(
-        `Tworzenie mema, tytuł: ${formData.get("title")}, mem: ${formData.get("image").name}`,
-      );
-
       const res = await axios.post(`${BASE_URL}/posts/`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -119,9 +115,8 @@ function useMemeContext() {
       const { data } = res;
       console.log(data.message);
       console.log("Mem utworzony");
-      await fetchMemes();
-
       dispatch({ type: REDUCER_ACTION_TYPE.CREATED, payload: data.data.post });
+      await fetchMemes();
     } catch (err) {
       dispatch({
         type: REDUCER_ACTIONS.REJECTED,
