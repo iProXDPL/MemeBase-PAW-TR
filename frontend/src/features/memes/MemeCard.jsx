@@ -1,6 +1,8 @@
 import Card from "../../ui/Card";
 import MemeActions from "./MemeActions";
 import MemeHeader from "./MemeHeader";
+import MemeShare from "./MemeShare";
+import MemeVotes from "./MemeVotes";
 
 function MemeCard({ meme, textMeme, memeUrl }) {
   return (
@@ -13,7 +15,13 @@ function MemeCard({ meme, textMeme, memeUrl }) {
         <p className="mt-1 mb-5 text-center text-xs font-medium text-zinc-700 sm:text-sm">
           {textMeme}
         </p>
-        <MemeActions />
+        <MemeActions>
+          <MemeVotes
+            likes={meme.likes.length}
+            dislikes={meme.dislikes.length}
+          />
+          <MemeShare />
+        </MemeActions>
       </Card>
     </div>
   );

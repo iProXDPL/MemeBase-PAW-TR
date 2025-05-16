@@ -8,13 +8,14 @@ function MemeHeader({ meme }) {
   const { user } = useContext(AuthContext);
   const { REDUCER_ACTIONS, dispatch } = useContext(MemeContext);
 
-  const currentUserIsAuthor = user && meme.author.username === user.username;
+  const authorName = meme.author.username;
+  const currentUserIsAuthor = user && authorName === user.username;
   const currentUserIsAdmin =
     user && user.role === "moderator" && !currentUserIsAuthor;
 
   return (
     <div className="flex items-center justify-between text-xs text-zinc-600 sm:text-base">
-      <DisplayMemeAuthor />
+      <DisplayMemeAuthor authorName={authorName} />
       <div className="flex gap-3">
         {currentUserIsAuthor && (
           <>

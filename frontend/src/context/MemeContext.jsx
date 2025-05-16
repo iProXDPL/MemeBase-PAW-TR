@@ -85,6 +85,7 @@ function useMemeContext() {
     try {
       const res = await axios.get(`${BASE_URL}/posts/`);
       const { data } = res;
+      console.log(data);
       dispatch({ type: REDUCER_ACTIONS.MEMES_LOADED, payload: data });
     } catch (err) {
       dispatch({
@@ -102,43 +103,29 @@ function useMemeContext() {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     const token = localStorage.getItem("token");
     const formData = new FormData();
-    formData.append("title", newMeme.title);
-    formData.append("file", newMeme.file);
+    formData.append("description", newMeme.title);
+    formData.append("image", newMeme.file);
     try {
       console.log(
-        `Tworzenie mema, tytuł: ${formData.get("title")}, mem: ${formData.get("file").name}`,
+        `Tworzenie mema, tytuł: ${formData.get("title")}, mem: ${formData.get("image").name}`,
       );
 
-      // FIXME: Wait for backend endpoint
-      // const res = await axios.post(`${BASE_URL}/posts/`, formData, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
-      const res = await axios.post(
-        `${BASE_URL}/posts/`,
-        {
-          title: "To jest tytuł memea",
-          imageUrl: "To jest url mema",
-          author: "681907e23eda1f28a0e59650",
+      const res = await axios.post(`${BASE_URL}/posts/`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      });
+
       const { data } = res;
       console.log(data.message);
       console.log("Mem utworzony");
       await fetchMemes();
-      dispatch({ type: REDUCER_ACTIONS.FAKE_LOADED });
-      // FIXME: Wait for backend endpoint
-      // dispatch({ type: REDUCER_ACTION_TYPE.CREATED, payload: data });
+
+      dispatch({ type: REDUCER_ACTION_TYPE.CREATED, payload: data.data.post });
     } catch (err) {
       dispatch({
         type: REDUCER_ACTIONS.REJECTED,
-        payload: `Wystąpił problem z publikowaniem mema: ${err.response.data.error}`,
+        payload: `Wystąpił problem z publikowaniem mema: ${err}`,
       });
     }
   }

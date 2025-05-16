@@ -7,9 +7,11 @@ import Registration from "./pages/Registration";
 import RandomMeme from "./pages/RandomMeme";
 import PublishMeme from "./pages/PublishMeme";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  const isUserLogged = localStorage.getItem("token");
+  const { token: isUserLogged } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
