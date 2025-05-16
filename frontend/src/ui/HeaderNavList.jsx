@@ -1,11 +1,11 @@
-import { User } from "@phosphor-icons/react";
+import { SignOut, User } from "@phosphor-icons/react";
 import Button from "./Button";
 import { NavLink } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 function HeaderNavList({ isMobileNavOpen, onClick }) {
-  const { token: isUser, isLoading } = useContext(AuthContext);
+  const { token: isUser, isLoading, logout } = useContext(AuthContext);
 
   return (
     <ul
@@ -39,7 +39,13 @@ function HeaderNavList({ isMobileNavOpen, onClick }) {
             Logowanie
           </Button>
         ) : (
-          <User />
+          <div className="flex gap-4">
+            <User className="cursor-pointer duration-300 hover:text-zinc-400" />
+            <SignOut
+              className="cursor-pointer duration-300 hover:text-zinc-400"
+              onClick={logout}
+            />
+          </div>
         )}
       </li>
     </ul>

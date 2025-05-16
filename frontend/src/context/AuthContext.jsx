@@ -6,6 +6,7 @@ const BASE_URL = "http://localhost:5001/api";
 const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
   LOGGEDIN: "LOGGEDIN",
+  LOGGED_OUT: "LOGGED_OUT",
 };
 
 const initialAuthState = {
@@ -26,6 +27,15 @@ function authReducer(state, action) {
         user: action.payload.data.user,
         isLoading: false,
         token: action.payload.token,
+      };
+    }
+
+    case REDUCER_ACTION_TYPE.LOGGED_OUT: {
+      return {
+        ...state,
+        user: {},
+        token: "",
+        isLoading: false,
       };
     }
   }
@@ -89,7 +99,11 @@ function useAuthContext() {
     }
   }
 
-  return { user, isLoading, login, token };
+  function logout() {
+    dispatch({ type: REDUCER_ACTION_TYPE.LOGGED_OUT });
+  }
+
+  return { user, isLoading, login, token, logout };
 }
 
 const initAuthContextState = {
@@ -97,6 +111,7 @@ const initAuthContextState = {
   isLoading: false,
   token: "",
   login: async () => {},
+  logout: () => {},
   dispatch: () => {},
   REDUCER_ACTIONS: REDUCER_ACTION_TYPE,
 };
