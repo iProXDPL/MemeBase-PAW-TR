@@ -19,13 +19,15 @@ async function checkUser(req) {
 exports.getPosts = async (req, res) => {
   try {
     if (req.query.author) {
-      const posts = await Post.find({ author: req.query.author });
+      const posts = await Post.find({ author: req.query.author }).populate(
+        "author"
+      );
       return res.json(posts);
     } else if (req.query.id) {
-      const posts = await Post.find({ _id: req.query.id });
+      const posts = await Post.find({ _id: req.query.id }).populate("author");
       return res.json(posts);
     } else {
-      const posts = await Post.find();
+      const posts = await Post.find().populate("author");
       res.json(posts);
     }
   } catch (err) {
@@ -41,19 +43,20 @@ exports.createPost = async (req, res) => {
       if (!description) {
         return res.status(400).json({ error: "Nie dodano opisu" });
       }
-      var author = currentUser.username;
       const image = req.file ? req.file.path : "";
       if (!image) {
         return res.status(400).json({ error: "Nie dodano zdjęcia" });
       }
-      const post = new Post({ author, image, description });
-      const postAuthor = await User.findOne({ username: post.author });
+      const post = new Post({ author: currentUser._id, image, description });
+      const postAuthor = await User.findOne({ username: currentUser.username });
       if (postAuthor.totalPosts >= 0) {
         postAuthor.totalPosts = Math.max(0, postAuthor.totalPosts + 1);
         await postAuthor.save();
       }
       await post.save();
-      res.status(201).json({ message: "Post created successfully" });
+      res
+        .status(201)
+        .json({ message: "Post created successfully", data: { post } });
     } else {
       res.status(500).json({ error: "Brak autoryzacji" });
     }
@@ -92,14 +95,18 @@ exports.updatePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     const currentUser = await checkUser(req);
+
     if (!currentUser)
       return res.status(401).json({ error: "Brak autoryzacji" });
 
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("author");
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
 
-    if (currentUser.username == post.author || currentUser.role == "admin") {
-      const postAuthor = await User.findOne({ username: post.author });
+    const isCurrentUserAuthor =
+      currentUser._id.toString() === post.author._id.toString();
+
+    if (isCurrentUserAuthor || currentUser.role == "admin") {
+      const postAuthor = await User.findById(currentUser._id);
       await Post.findByIdAndDelete(req.params.id);
 
       if (postAuthor) {

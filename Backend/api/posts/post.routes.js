@@ -32,7 +32,7 @@ const {
   addDislike,
   Unlike,
   UnDislike,
-  RandomPost
+  RandomPost,
 } = require("./post.controller");
 
 /**
