@@ -19,6 +19,7 @@ function MemeCard({ meme, textMeme, memeUrl }) {
           <MemeVotes
             likes={meme.likes.length}
             dislikes={meme.dislikes.length}
+            meme={meme}
           />
           <MemeShare />
         </MemeActions>

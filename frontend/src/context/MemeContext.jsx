@@ -16,6 +16,7 @@ const REDUCER_ACTION_TYPE = {
   DELETED: "DELETED",
   MEMES_LOADED: "MEMES_LOADED",
   FAKE_LOADED: "FAKE_LOADED",
+  UPDATED: "UPDATED",
   DELETE_MODAL_VISIBLE: "DELETE_MODAL_VISIBLE",
   DELETE_MODAL_CLOSED: "DELETE_MODAL_CLOSED",
 };
@@ -41,6 +42,10 @@ function memeReducer(state, action) {
         currentMeme: action.payload,
         memes: [...state.memes, action.payload],
       };
+    }
+
+    case REDUCER_ACTION_TYPE.UPDATED: {
+      return { ...state, isLoading: false };
     }
 
     case REDUCER_ACTION_TYPE.MEMES_LOADED: {
@@ -148,6 +153,106 @@ function useMemeContext() {
     }
   }
 
+  async function likeMeme(memeId) {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    console.log("liking...");
+    const token = localStorage.getItem("token");
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/posts/like/${memeId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const { data } = res;
+
+      if (data.status !== "success")
+        throw new Error("Nie udało się polubić mema");
+
+      await fetchMemes();
+      dispatch({ type: REDUCER_ACTIONS.UPDATED });
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  async function unlikeMeme(memeId) {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    console.log("unliking...");
+    const token = localStorage.getItem("token");
+    try {
+      const res = await axios.delete(`${BASE_URL}/posts/like/${memeId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { data } = res;
+
+      if (data.status !== "success")
+        throw new Error("Nie udało się odlubić mema");
+
+      await fetchMemes();
+      dispatch({ type: REDUCER_ACTIONS.UPDATED });
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  async function dislikeMeme(memeId) {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    console.log("disliking...");
+    const token = localStorage.getItem("token");
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/posts/dislike/${memeId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const { data } = res;
+
+      if (data.status !== "success")
+        throw new Error("Nie udało się dislajkować mema");
+
+      await fetchMemes();
+      dispatch({ type: REDUCER_ACTIONS.UPDATED });
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  async function undislikeMeme(memeId) {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    console.log("undisliking...");
+    const token = localStorage.getItem("token");
+    try {
+      const res = await axios.delete(`${BASE_URL}/posts/dislike/${memeId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { data } = res;
+
+      if (data.status !== "success")
+        throw new Error("Nie udało się undislajkować mema");
+
+      await fetchMemes();
+      dispatch({ type: REDUCER_ACTIONS.UPDATED });
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
   return {
     memes,
     isLoading,
@@ -157,6 +262,10 @@ function useMemeContext() {
     isDeleteMemeModal,
     dispatch,
     deleteMeme,
+    likeMeme,
+    unlikeMeme,
+    dislikeMeme,
+    undislikeMeme,
     REDUCER_ACTIONS,
   };
 }
@@ -169,6 +278,10 @@ const initMemeContextState = {
   error: "",
   deleteMeme: async () => {},
   createMeme: async () => {},
+  likeMeme: async () => {},
+  unlikeMeme: async () => {},
+  dislikeMeme: async () => {},
+  undislikeMeme: async () => {},
   dispatch: () => {},
   REDUCER_ACTIONS: REDUCER_ACTION_TYPE,
 };
