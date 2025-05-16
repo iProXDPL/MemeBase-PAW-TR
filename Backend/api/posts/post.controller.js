@@ -6,7 +6,6 @@ const { promisify } = require("util");
 
 async function checkUser(req) {
   var token = req.headers.authorization;
-
   if (!token) {
     return false;
   }
@@ -140,12 +139,12 @@ exports.deletePost = async (req, res) => {
 exports.addLike = async (req, res) => {
   try {
     const currentUser = await checkUser(req);
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("author");
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
     if (post.likes.includes(currentUser.username)) {
       return res.status(400).json({ error: "Już polubiłeś ten post" });
     }
-    const postAuthor = await User.findOne({ username: post.author });
+    const postAuthor = await User.findOne({ username: post.author.username });
     if (post.dislikes.includes(currentUser.username)) {
       post.dislikes = post.dislikes.filter(
         (dislike) => dislike !== currentUser.username
@@ -165,7 +164,7 @@ exports.addLike = async (req, res) => {
       await postAuthor.save();
     }
 
-    res.status(200).json({ message: "Polubienie dodane" });
+    res.status(200).json({ message: "Polubienie dodane", status: "success" });
   } catch (err) {
     res.status(400).json({ error: "Nie udało się dodać polubienia" });
   }
@@ -174,7 +173,7 @@ exports.addLike = async (req, res) => {
 exports.Unlike = async (req, res) => {
   try {
     const currentUser = await checkUser(req);
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("author");
 
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
 
@@ -182,13 +181,15 @@ exports.Unlike = async (req, res) => {
       post.likes = post.likes.filter((like) => like !== currentUser.username);
       await post.save();
 
-      const postAuthor = await User.findOne({ username: post.author });
+      const postAuthor = await User.findOne({ username: post.author.username });
       if (postAuthor) {
         postAuthor.totalLikes = Math.max(0, postAuthor.totalLikes - 1);
         await postAuthor.save();
       }
 
-      res.status(200).json({ message: "Polubienie usunięte" });
+      res
+        .status(200)
+        .json({ message: "Polubienie usunięte", status: "success" });
     } else {
       return res.status(400).json({ error: "Nie można usunąć polubienia" });
     }
@@ -200,14 +201,14 @@ exports.Unlike = async (req, res) => {
 exports.addDislike = async (req, res) => {
   try {
     const currentUser = await checkUser(req);
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("author");
 
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
 
     if (post.dislikes.includes(currentUser.username)) {
       return res.status(400).json({ error: "Już zdislajkowałeś ten post" });
     }
-    const postAuthor = await User.findOne({ username: post.author });
+    const postAuthor = await User.findOne({ username: post.author.username });
     if (post.likes.includes(currentUser.username)) {
       post.likes = post.likes.filter((like) => like !== currentUser.username);
 
@@ -225,7 +226,7 @@ exports.addDislike = async (req, res) => {
       await postAuthor.save();
     }
 
-    res.status(200).json({ message: "Dislajk dodany" });
+    res.status(200).json({ message: "Dislajk dodany", status: "success" });
   } catch (err) {
     res.status(400).json({ error: "Nie udało się dodać dislajka" });
   }
@@ -234,7 +235,7 @@ exports.addDislike = async (req, res) => {
 exports.UnDislike = async (req, res) => {
   try {
     const currentUser = await checkUser(req);
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("author");
 
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
 
@@ -244,13 +245,13 @@ exports.UnDislike = async (req, res) => {
       );
       await post.save();
 
-      const postAuthor = await User.findOne({ username: post.author });
+      const postAuthor = await User.findOne({ username: post.author.username });
       if (postAuthor) {
         postAuthor.totalDislikes = Math.max(0, postAuthor.totalDislikes - 1);
         await postAuthor.save();
       }
 
-      res.status(200).json({ message: "Dislajk usunięty" });
+      res.status(200).json({ message: "Dislajk usunięty", status: "success" });
     } else {
       return res.status(400).json({ error: "Nie można usunąć dislajka" });
     }
