@@ -4,8 +4,8 @@ function RankingTableHeader() {
       <div className="w-10 text-center lg:w-12">#</div>
       <div className="w-32 text-center lg:w-44">Nazwa Użytkownika</div>
       <div className="w-32 text-center lg:w-44">Liczba Memów</div>
-      <div className="w-32 text-center lg:w-44">Liczba Polubień</div>
-      <div className="w-32 text-center lg:w-44">Punkty</div>
+      <div className="w-32 text-center lg:w-44">Liczba Like</div>
+      <div className="w-32 text-center lg:w-44">Liczba Dislike</div>
     </div>
   );
 }

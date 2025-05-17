@@ -1,7 +1,12 @@
 import { FacebookLogo, XLogo } from "@phosphor-icons/react";
 import Logo from "./Logo";
+import { Link } from "react-router";
 
 function Footer() {
+  function scrollTop() {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }
+
   return (
     <div className="bg-violet-800 px-6 py-4 text-zinc-100 sm:py-6 md:pt-8 md:pb-12">
       <div className="m-auto sm:grid sm:grid-cols-4 md:max-w-11/12">
@@ -26,61 +31,65 @@ function Footer() {
         <div className="pt-6 text-center text-xs sm:py-2 md:text-sm">
           <ul className="space-y-2 lg:space-y-3">
             <li>
-              <a
+              <Link
                 className="transition-colors duration-300 hover:text-zinc-400"
-                href="#"
+                to="/"
               >
                 Strona Główna
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="transition-colors duration-300 hover:text-zinc-400"
-                href="#"
+                to="losowymem"
               >
                 Losowy Mem
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="transition-colors duration-300 hover:text-zinc-400"
-                href="#"
+                to="ranking"
               >
                 Rankingi
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
         <div className="pt-6 text-center text-xs sm:py-2 md:text-sm">
           <ul className="space-y-2 lg:space-y-3">
             <li>
-              <a
+              <Link
                 className="transition-colors duration-300 hover:text-zinc-400"
-                href="#"
+                //TODO: change path
+                to="/"
               >
                 Konto
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="transition-colors duration-300 hover:text-zinc-400"
-                href="#"
+                to="publikuj"
               >
                 Publikuj Mema
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="transition-colors duration-300 hover:text-zinc-400"
-                href="#"
+                to="/"
               >
                 Regulamin
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
         <div className="py-6 text-center text-xs sm:py-2 md:text-sm">
-          <span className="cursor-pointer transition-colors duration-300 hover:text-zinc-400">
+          <span
+            className="cursor-pointer transition-colors duration-300 hover:text-zinc-400"
+            onClick={scrollTop}
+          >
             Do Góry &uarr;
           </span>
         </div>

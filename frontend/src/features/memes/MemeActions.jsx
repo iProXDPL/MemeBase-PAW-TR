@@ -1,11 +1,7 @@
-import MemeShare from "./MemeShare";
-import MemeVotes from "./MemeVotes";
-
-function MemeActions() {
+function MemeActions({ children }) {
   return (
-    <div className="flex justify-between items-center sm:mt-2 mt-1">
-      <MemeVotes />
-      <MemeShare />
+    <div className="mt-1 flex items-center justify-between sm:mt-2">
+      {children}
     </div>
   );
 }
