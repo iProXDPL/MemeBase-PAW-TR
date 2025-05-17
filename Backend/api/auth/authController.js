@@ -10,7 +10,7 @@ const createToken = (user) => {
 
 exports.user = async (req, res, next) => {
   try {
-    const token = req.headers["token"];
+    const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return res.status(200).json({
@@ -21,6 +21,8 @@ exports.user = async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
     const currentUser = await User.findById(decoded.id);
+
+    currentUser.password = undefined;
 
     if (!currentUser)
       res
@@ -60,7 +62,8 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username }).select("+password");
+  console.log(user);
 
   if (!user)
     return res.status(400).json({ error: "Nieprawidłowe dane logowania" });
@@ -69,5 +72,21 @@ exports.login = async (req, res) => {
   if (!isMatch) return res.status(400).json({ error: "Nieprawidłowe hasło" });
 
   const token = createToken(user);
-  res.status(201).json({ token });
+  user.password = undefined;
+  res.status(201).json({ token, data: { user } });
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    if (req.query.id) {
+      const user = await User.findById(req.query.id).select("-password");
+      if (!user) return res.status(404).json({ error: "Nie znaleziono użytkownika" });
+      return res.json(user);
+    }
+    const users = await User.find().select("-password");
+    if (!users) return res.status(404).json({ error: "Nie znaleziono użytkowników" });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Błąd pobierania użytkowników" });
+  }
 };
