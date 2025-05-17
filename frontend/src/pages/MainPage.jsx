@@ -5,7 +5,6 @@ import { MemeContext } from "../context/MemeContext";
 
 function MainPage() {
   const { memes } = useContext(MemeContext);
-
   return (
     <div className="flex flex-col gap-6 px-6 py-8 sm:gap-12">
       {memes.map((meme) => (
@@ -17,7 +16,7 @@ function MainPage() {
         />
       ))}
 
-      <MemePageNavigation />
+      {/*<MemePageNavigation />*/}
     </div>
   );
 }

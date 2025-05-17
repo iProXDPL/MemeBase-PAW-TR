@@ -40,7 +40,10 @@ function MemeHeader({ meme }) {
             size={20}
             className="cursor-pointer transition-all duration-300 hover:text-zinc-900"
             onClick={() =>
-              dispatch({ type: REDUCER_ACTIONS.DELETE_MODAL_VISIBLE })
+              dispatch({
+                type: REDUCER_ACTIONS.DELETE_MODAL_VISIBLE,
+                payload: meme,
+              })
             }
           />
         )}

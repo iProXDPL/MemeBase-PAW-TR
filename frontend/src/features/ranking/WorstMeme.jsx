@@ -25,7 +25,7 @@ function WorstMeme() {
       </SectionUndelinedTitle>
       <MemeCard
         meme={worstMeme}
-        textMeme="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        textMeme={worstMeme.description}
         memeUrl={`http://localhost:5001/${worstMeme.image}`}
       />
     </RankingWrapper>

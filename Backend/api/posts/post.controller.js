@@ -107,17 +107,15 @@ exports.updatePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     const currentUser = await checkUser(req);
-
     if (!currentUser)
       return res.status(401).json({ error: "Brak autoryzacji" });
-
     const post = await Post.findById(req.params.id).populate("author");
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
 
     const isCurrentUserAuthor =
       currentUser._id.toString() === post.author._id.toString();
 
-    if (isCurrentUserAuthor || currentUser.role == "admin") {
+    if (isCurrentUserAuthor || currentUser.role == "moderator") {
       const postAuthor = await User.findById(currentUser._id);
       await Post.findByIdAndDelete(req.params.id);
 
@@ -275,7 +273,7 @@ exports.UnDislike = async (req, res) => {
 
 exports.RandomPost = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate("author");
     if (posts.length === 0) {
       return res.status(404).json({ error: "Brak postów" });
     }

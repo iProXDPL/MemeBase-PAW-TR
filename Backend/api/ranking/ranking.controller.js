@@ -24,11 +24,21 @@ exports.getBestMeme = async (req, res) => {
           score: { $subtract: [{ $size: "$likes" }, { $size: "$dislikes" }] },
         },
       },
+      { $sort: { score: -1 } },
+      { $limit: 1 },
       {
-        $sort: { score: -1 },
+        $lookup: {
+          from: "users",
+          localField: "author",
+          foreignField: "_id",
+          as: "author",
+        },
       },
+      { $unwind: "$author" },
       {
-        $limit: 1,
+        $project: {
+          "author.password": 0,
+        },
       },
     ]);
     if (bestMeme.length === 0) {
@@ -50,11 +60,21 @@ exports.getWorstMeme = async (req, res) => {
           score: { $subtract: [{ $size: "$likes" }, { $size: "$dislikes" }] },
         },
       },
+      { $sort: { score: 1 } },
+      { $limit: 1 },
       {
-        $sort: { score: 1 }, // Najgorszy post (największa różnica na minus)
+        $lookup: {
+          from: "users",
+          localField: "author",
+          foreignField: "_id",
+          as: "author",
+        },
       },
+      { $unwind: "$author" },
       {
-        $limit: 1,
+        $project: {
+          "author.password": 0,
+        },
       },
     ]);
     if (worstMeme.length === 0) {

@@ -259,6 +259,20 @@ function useMemeContext() {
     }
   }
 
+  async function randomMeme() {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    try {
+      const res = await axios.get(`${BASE_URL}/posts/random`);
+      // Jeśli backend zwraca {data: {post: ...}}, dostosuj poniższą linię
+      dispatch({ type: REDUCER_ACTIONS.CREATED, payload: res.data });
+    } catch (err) {
+      dispatch({
+        type: REDUCER_ACTIONS.REJECTED,
+        payload: `Nie udało się pobrać losowego mema: ${err.message}`,
+      });
+    }
+  }
+
   return {
     memes,
     isLoading,
@@ -272,6 +286,7 @@ function useMemeContext() {
     unlikeMeme,
     dislikeMeme,
     undislikeMeme,
+    randomMeme,
     REDUCER_ACTIONS,
   };
 }
@@ -289,6 +304,7 @@ const initMemeContextState = {
   dislikeMeme: async () => {},
   undislikeMeme: async () => {},
   dispatch: () => {},
+  randomMeme: async () => {},
   REDUCER_ACTIONS: REDUCER_ACTION_TYPE,
 };
 

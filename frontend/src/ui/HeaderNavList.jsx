@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 function HeaderNavList({ isMobileNavOpen, onClick }) {
-  const { token: isUser, isLoading, logout } = useContext(AuthContext);
+  const { token: isUser, isLoading, logout, user } = useContext(AuthContext);
 
   return (
     <ul
@@ -40,6 +40,7 @@ function HeaderNavList({ isMobileNavOpen, onClick }) {
           </Button>
         ) : (
           <div className="flex gap-4">
+            {user.username}
             <User className="cursor-pointer duration-300 hover:text-zinc-400" />
             <SignOut
               className="cursor-pointer duration-300 hover:text-zinc-400"
