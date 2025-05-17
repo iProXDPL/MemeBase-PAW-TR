@@ -20,6 +20,8 @@ const REDUCER_ACTION_TYPE = {
   UPDATED: "UPDATED",
   DELETE_MODAL_VISIBLE: "DELETE_MODAL_VISIBLE",
   DELETE_MODAL_CLOSED: "DELETE_MODAL_CLOSED",
+  EDIT_MODAL_VISIBLE: "EDIT_MODAL_VISIBLE",
+  EDIT_MODAL_CLOSED: "EDIT_MODAL_CLOSED",
 };
 
 const initialMemeState = {
@@ -78,6 +80,14 @@ function memeReducer(state, action) {
       return { ...state, isDeleteMemeModal: false };
     }
 
+    case REDUCER_ACTION_TYPE.EDIT_MODAL_VISIBLE: {
+      return { ...state, isEditMemeModal: true, currentMeme: action.payload };
+    }
+
+    case REDUCER_ACTION_TYPE.EDIT_MODAL_CLOSED: {
+      return { ...state, isEditMemeModal: false };
+    }
+
     default:
       throw new Error("Nieznany typ akcji");
   }
@@ -85,7 +95,7 @@ function memeReducer(state, action) {
 
 function useMemeContext() {
   const [
-    { memes, isLoading, currentMeme, error, isDeleteMemeModal },
+    { memes, isLoading, currentMeme, error, isDeleteMemeModal, isEditMemeModal },
     dispatch,
   ] = useReducer(memeReducer, initialMemeState);
 
@@ -273,6 +283,25 @@ function useMemeContext() {
     }
   }
 
+  async function editMeme(memeId, updatedData) {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    const token = localStorage.getItem("token");
+    try {
+      const res = await axios.put(`${BASE_URL}/posts/${memeId}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { data } = res;
+      if (data.status !== "success")
+        throw new Error("Nie udało się edytować mema");
+      await fetchMemes();
+      dispatch({ type: REDUCER_ACTIONS.UPDATED });
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
   return {
     memes,
     isLoading,
@@ -280,6 +309,7 @@ function useMemeContext() {
     createMeme,
     error,
     isDeleteMemeModal,
+    isEditMemeModal,
     dispatch,
     deleteMeme,
     likeMeme,
@@ -287,6 +317,7 @@ function useMemeContext() {
     dislikeMeme,
     undislikeMeme,
     randomMeme,
+    editMeme,
     REDUCER_ACTIONS,
   };
 }
@@ -305,6 +336,7 @@ const initMemeContextState = {
   undislikeMeme: async () => {},
   dispatch: () => {},
   randomMeme: async () => {},
+  editMeme: async () => {},
   REDUCER_ACTIONS: REDUCER_ACTION_TYPE,
 };
 

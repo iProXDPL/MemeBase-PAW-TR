@@ -18,11 +18,15 @@ async function checkUser(req) {
 exports.getPosts = async (req, res) => {
   try {
     if (req.query.author) {
-      const posts = await Post.find({ author: req.query.author })
+      const user = await User.findOne({ username: req.query.author });
+      if (!user) {
+        return res.status(404).json({ error: "Nie znaleziono użytkownika" });
+      }
+      const posts = await Post.find({ author: user._id })
         .populate("author")
         .sort({ createdAt: -1 });
       if (posts.length === 0) {
-        return res.status(404).json({ error: "Nie znaleziono postów" });
+        return res.status(200).json([]);
       }
       return res.json(posts);
     } else if (req.query.id) {
@@ -30,7 +34,7 @@ exports.getPosts = async (req, res) => {
         .populate("author")
         .sort({ createdAt: -1 });
       if (posts.length === 0) {
-        return res.status(404).json({ error: "Nie znaleziono postu" });
+        return res.status(200).json([]);
       }
       return res.json(posts);
     } else {
@@ -38,7 +42,7 @@ exports.getPosts = async (req, res) => {
         .populate("author")
         .sort({ createdAt: -1 });
       if (posts.length === 0) {
-        return res.status(404).json({ error: "Nie znaleziono postów" });
+        return res.status(200).json([]);
       }
       res.json(posts);
     }
@@ -84,18 +88,20 @@ exports.updatePost = async (req, res) => {
     const image = req.file ? req.file.path : "";
     if (!req.params.id)
       return res.status(404).json({ error: "Nie podałeś id" });
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("author");
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
-    if (currentUser.username == post.author || currentUser.role == "admin") {
+    if (currentUser.username == post.author.username || currentUser.role == "moderator") {
       if (image && post.image && post.image !== image) {
         try {
           fs.unlinkSync(post.image);
         } catch (e) {}
       }
       post.description = description;
-      post.image = image;
+      if (image) {
+        post.image = image;
+      }
       await post.save();
-      res.status(201).json({ message: "Post zaktualizowany" });
+      res.status(201).json({ status:"success", message: "Post zaktualizowany" });
     } else {
       return res.status(401).json({ error: "Brak autoryzacji" });
     }

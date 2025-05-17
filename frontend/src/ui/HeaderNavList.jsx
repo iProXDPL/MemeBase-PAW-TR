@@ -41,7 +41,13 @@ function HeaderNavList({ isMobileNavOpen, onClick }) {
         ) : (
           <div className="flex gap-4">
             {user.username}
-            <User className="cursor-pointer duration-300 hover:text-zinc-400" />
+            <NavLink
+              to={`/user/${user.username}`}
+              onClick={() => onClick(false)}
+              aria-label="Twój profil"
+            >
+              <User className="cursor-pointer duration-300 hover:text-zinc-400" />
+            </NavLink>
             <SignOut
               className="cursor-pointer duration-300 hover:text-zinc-400"
               onClick={logout}

@@ -41,9 +41,9 @@ function PublishMeme() {
       <SectionUndelinedTitle>Publikuj mema</SectionUndelinedTitle>
       <Card>
         <div className="mb-4 flex flex-col">
-          <label className="pb-2 text-zinc-600">Tytuł</label>
+          <label className="pb-2 text-zinc-600">Opis</label>
           <input
-            placeholder="Tytuł"
+            placeholder="Opis"
             className="rounded-lg bg-white p-2 text-base text-zinc-700 focus:ring-3 focus:ring-violet-800 focus:ring-offset-2 focus:outline-none"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
