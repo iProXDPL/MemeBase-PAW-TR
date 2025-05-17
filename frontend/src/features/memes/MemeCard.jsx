@@ -5,6 +5,7 @@ import MemeShare from "./MemeShare";
 import MemeVotes from "./MemeVotes";
 
 function MemeCard({ meme, textMeme, memeUrl }) {
+  console.log(meme);
   return (
     <div className="m-auto w-full sm:w-10/12 md:max-w-[500px]">
       <Card>

@@ -12,6 +12,7 @@ const BASE_URL = "http://localhost:5001/api";
 const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
   REJECTED: "REJECTED",
+  MEME_FETCH_REJECTED: "MEME_FETCH_REJECTED",
   CREATED: "CREATED",
   DELETED: "DELETED",
   MEMES_LOADED: "MEMES_LOADED",
@@ -26,13 +27,14 @@ const initialMemeState = {
   isLoading: false,
   currentMeme: {},
   error: "",
+  uploadError: "",
   isDeleteMemeModal: false,
 };
 
 function memeReducer(state, action) {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.LOADING: {
-      return { ...state, isLoading: true, error: "" };
+      return { ...state, isLoading: true, uploadError: "" };
     }
 
     case REDUCER_ACTION_TYPE.CREATED: {
@@ -54,6 +56,10 @@ function memeReducer(state, action) {
 
     case REDUCER_ACTION_TYPE.REJECTED: {
       return { ...state, isLoading: false, error: action.payload };
+    }
+
+    case REDUCER_ACTION_TYPE.MEME_FETCH_REJECTED: {
+      return { ...state, isLoading: false, uploadError: action.payload };
     }
 
     case REDUCER_ACTION_TYPE.DELETED: {
@@ -94,7 +100,7 @@ function useMemeContext() {
       dispatch({ type: REDUCER_ACTIONS.MEMES_LOADED, payload: data });
     } catch (err) {
       dispatch({
-        type: REDUCER_ACTIONS.REJECTED,
+        type: REDUCER_ACTIONS.MEME_FETCH_REJECTED,
         payload: `Wystąpił błąd podczas ładowania memów ${err.response?.data?.error || err.message}`,
       });
     }

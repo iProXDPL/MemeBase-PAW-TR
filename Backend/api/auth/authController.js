@@ -75,3 +75,18 @@ exports.login = async (req, res) => {
   user.password = undefined;
   res.status(201).json({ token, data: { user } });
 };
+
+exports.getUsers = async (req, res) => {
+  try {
+    if (req.query.id) {
+      const user = await User.findById(req.query.id).select("-password");
+      if (!user) return res.status(404).json({ error: "Nie znaleziono użytkownika" });
+      return res.json(user);
+    }
+    const users = await User.find().select("-password");
+    if (!users) return res.status(404).json({ error: "Nie znaleziono użytkowników" });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Błąd pobierania użytkowników" });
+  }
+};

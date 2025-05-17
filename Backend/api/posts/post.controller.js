@@ -18,15 +18,28 @@ async function checkUser(req) {
 exports.getPosts = async (req, res) => {
   try {
     if (req.query.author) {
-      const posts = await Post.find({ author: req.query.author }).populate(
-        "author"
-      );
+      const posts = await Post.find({ author: req.query.author })
+        .populate("author")
+        .sort({ createdAt: -1 });
+      if (posts.length === 0) {
+        return res.status(404).json({ error: "Nie znaleziono postów" });
+      }
       return res.json(posts);
     } else if (req.query.id) {
-      const posts = await Post.find({ _id: req.query.id }).populate("author");
+      const posts = await Post.find({ _id: req.query.id })
+        .populate("author")
+        .sort({ createdAt: -1 });
+      if (posts.length === 0) {
+        return res.status(404).json({ error: "Nie znaleziono postu" });
+      }
       return res.json(posts);
     } else {
-      const posts = await Post.find().populate("author");
+      const posts = await Post.find()
+        .populate("author")
+        .sort({ createdAt: -1 });
+      if (posts.length === 0) {
+        return res.status(404).json({ error: "Nie znaleziono postów" });
+      }
       res.json(posts);
     }
   } catch (err) {

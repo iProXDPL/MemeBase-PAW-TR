@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App.jsx";
 import MemeProvider from "./context/MemeContext.jsx";
 import AuthProvider from "./context/AuthContext.jsx";
+import RankingProvider from "./context/RankingContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <MemeProvider>
-      <StrictMode>
-        <App />
-      </StrictMode>
+      <RankingProvider>
+        <StrictMode>
+          <App />
+        </StrictMode>
+      </RankingProvider>
     </MemeProvider>
   </AuthProvider>,
 );

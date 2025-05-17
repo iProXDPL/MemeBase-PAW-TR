@@ -1,4 +1,10 @@
-function RankingTableUser({ place, username, memeCount, likesCount, points }) {
+function RankingTableUser({
+  place,
+  username,
+  memeCount,
+  likesCount,
+  dislikesCount,
+}) {
   return (
     <div
       className={`flex min-w-fit items-center justify-between gap-1 ${place % 2 === 0 ? "bg-white" : "bg-zinc-100"} py-2 text-xs text-zinc-700 lg:text-base`}
@@ -7,7 +13,7 @@ function RankingTableUser({ place, username, memeCount, likesCount, points }) {
       <div className="w-32 text-center lg:w-44">{username}</div>
       <div className="w-32 text-center lg:w-44">{memeCount}</div>
       <div className="w-32 text-center lg:w-44">{likesCount}</div>
-      <div className="w-32 text-center lg:w-44">{points} pkt</div>
+      <div className="w-32 text-center lg:w-44">{dislikesCount}</div>
     </div>
   );
 }
