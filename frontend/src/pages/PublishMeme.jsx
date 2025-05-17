@@ -19,12 +19,12 @@ function PublishMeme() {
       setTitleError("Tytuł nie został wprowadzony");
       return;
     }
-
     if (!file) return setIsFileError(true);
-    if (!title) setTitleError("Tytuł nie został wprowadzony");
+    if (!title) return setTitleError("Tytuł nie został wprowadzony");
 
     setIsFileError(false);
     setTitleError("");
+    console.log(`title: ${title}`);
 
     createMeme({ title, file });
 
