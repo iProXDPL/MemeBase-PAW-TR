@@ -76,4 +76,3 @@ Po dodaniu Dockera oraz usunięciu błędów i mergowaniu tego, projekt będzie 
 
 **Podpis:**
 Kierownik projektu – Krzysztof W
-""
