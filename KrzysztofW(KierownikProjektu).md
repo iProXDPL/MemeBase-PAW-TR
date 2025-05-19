@@ -1,4 +1,4 @@
-""# Sprawozdanie z pełnienia funkcji kierownika projektu
+# Sprawozdanie z pełnienia funkcji kierownika projektu
 
 ## Projekt: Aplikacja do wyświetlania memów (technologie MERN)
 
