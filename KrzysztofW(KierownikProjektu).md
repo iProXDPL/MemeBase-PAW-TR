@@ -37,11 +37,11 @@ W ramach organizacji pracy nad projektem:
 - Następnie rozpisałem zadania dla trzeciego **milestone’a** jako kolejne **issues** na GitHubie i ponownie przydzieliłem je członkom zespołu.
 -W ramach trzeciego i czwartego milestone’a skoncentrowaliśmy się na kluczowych funkcjonalnościach aplikacji, czyli tworzeniu, edytowaniu, usuwaniu postów oraz ich rankingu:
   -Stworzyłem szczegółowy opis zadań na GitHubie, uwzględniając zarówno frontend, jak i backend aplikacji.
-  W backendzie zaimplementowaliśmy:
+-W backendzie zaimplementowaliśmy:
     Modele danych w MongoDB dla postów.
     Endpointy REST API do tworzenia, edycji, usuwania postów, ich oceniania (ranking) oraz lajkowania.
     Logikę odpowiedzialną za ranking postów według liczby polubień, czasu publikacji oraz mechanizm dodawania i usuwania lajków.
-  Na froncie opracowaliśmy:
+-Na froncie opracowaliśmy:
     -Formularze do dodawania i edycji oraz usuwania postów.
     -Interfejs do zarządzania listą postów oraz widok rankingu.
     -Po ukończeniu implementacji zorganizowałem spotkanie zespołu w celu przetestowania funkcjonalności oraz weryfikacji poprawności działania kodu.
