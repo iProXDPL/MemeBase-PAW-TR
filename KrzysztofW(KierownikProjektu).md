@@ -35,7 +35,21 @@ W ramach organizacji pracy nad projektem:
   - Oryginalne branche zostały przemianowane odpowiednio na `FrontendPierwszyMilestone` i `BackendPierwszyMilestone`
   - Utworzyłem nowe, czyste branche: `frontend`, `backend`, `docker`
 - Następnie rozpisałem zadania dla trzeciego **milestone’a** jako kolejne **issues** na GitHubie i ponownie przydzieliłem je członkom zespołu.
-
+-W ramach trzeciego i czwartego milestone’a skoncentrowaliśmy się na kluczowych funkcjonalnościach aplikacji, czyli tworzeniu, edytowaniu, usuwaniu postów oraz ich rankingu:
+  -Stworzyłem szczegółowy opis zadań na GitHubie, uwzględniając zarówno frontend, jak i backend aplikacji.
+  W backendzie zaimplementowaliśmy:
+    Modele danych w MongoDB dla postów.
+    Endpointy REST API do tworzenia, edycji, usuwania postów, ich oceniania (ranking) oraz lajkowania.
+    Logikę odpowiedzialną za ranking postów według liczby polubień, czasu publikacji oraz mechanizm dodawania i usuwania lajków.
+  Na froncie opracowaliśmy:
+    -Formularze do dodawania i edycji oraz usuwania postów.
+    -Interfejs do zarządzania listą postów oraz widok rankingu.
+    -Po ukończeniu implementacji zorganizowałem spotkanie zespołu w celu przetestowania funkcjonalności oraz weryfikacji poprawności działania kodu.
+    -Po pozytywnym zakończeniu testów, wykonaliśmy merge do głównej gałęzi main oraz zarchiwizowaliśmy wcześniejsze branche:
+      -`FrontendDrugi/TrzeciMilestone` oraz `BackendDrugi/TrzeciMilestone` zostały utworzone dla celów archiwizacji.
+-Następnie przygotowałem nowe, czyste branche: frontend, backend oraz zahostowałem strone na darmowym hostingu w celu zapozania się z hostowaniem aplikacji.
+-Nastepnym krokiem będzie pozbycie się błędów oraz dodanie dockera.
+-Po dodaniu dockera oraz usunięciu błedów oraz mergowaniu tego, projekt będzie ukończony z wcześniejszymi założeniami.
 ---
 
 **Podpis:**  
