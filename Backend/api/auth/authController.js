@@ -53,7 +53,7 @@ exports.register = async (req, res) => {
     await user.save();
 
     const token = createToken(user);
-    res.status(201).json({ token });
+    res.status(201).json({ token, data: { user } });
   } catch (err) {
     res.status(500).json({ error: "Błąd rejestracji" });
   }
@@ -80,17 +80,22 @@ exports.getUsers = async (req, res) => {
   try {
     if (req.query.id) {
       const user = await User.findById(req.query.id).select("-password");
-      if (!user) return res.status(404).json({ error: "Nie znaleziono użytkownika" });
+      if (!user)
+        return res.status(404).json({ error: "Nie znaleziono użytkownika" });
       return res.json(user);
     } else if (req.query.username) {
-      const user = await User.findOne({ username: req.query.username }).select("-password");
-      if (!user) return res.status(404).json({ error: "Nie znaleziono użytkownika" });
-      return res.json(user);}
-      else {
-        const users = await User.find().select("-password");
-        if (!users) return res.status(404).json({ error: "Nie znaleziono użytkowników" });
-       res.json(users);
-      }
+      const user = await User.findOne({ username: req.query.username }).select(
+        "-password"
+      );
+      if (!user)
+        return res.status(404).json({ error: "Nie znaleziono użytkownika" });
+      return res.json(user);
+    } else {
+      const users = await User.find().select("-password");
+      if (!users)
+        return res.status(404).json({ error: "Nie znaleziono użytkowników" });
+      res.json(users);
+    }
   } catch (err) {
     res.status(500).json({ error: "Błąd pobierania użytkowników" });
   }

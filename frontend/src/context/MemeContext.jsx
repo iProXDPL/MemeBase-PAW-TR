@@ -7,7 +7,7 @@ import {
 } from "react";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api`;
 
 const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
@@ -22,6 +22,8 @@ const REDUCER_ACTION_TYPE = {
   DELETE_MODAL_CLOSED: "DELETE_MODAL_CLOSED",
   EDIT_MODAL_VISIBLE: "EDIT_MODAL_VISIBLE",
   EDIT_MODAL_CLOSED: "EDIT_MODAL_CLOSED",
+  FETCHED_RANDOM_MEME: "FETCHED_RANDOM_MEME",
+  FETCHED_MEME: "FETCHED_MEME",
 };
 
 const initialMemeState = {
@@ -88,6 +90,14 @@ function memeReducer(state, action) {
       return { ...state, isEditMemeModal: false };
     }
 
+    case REDUCER_ACTION_TYPE.FETCHED_RANDOM_MEME: {
+      return { ...state, currentMeme: action.payload, isLoading: false };
+    }
+
+    case REDUCER_ACTION_TYPE.FETCHED_MEME: {
+      return { ...state, currentMeme: action.payload, isLoading: false };
+    }
+
     default:
       throw new Error("Nieznany typ akcji");
   }
@@ -95,7 +105,14 @@ function memeReducer(state, action) {
 
 function useMemeContext() {
   const [
-    { memes, isLoading, currentMeme, error, isDeleteMemeModal, isEditMemeModal },
+    {
+      memes,
+      isLoading,
+      currentMeme,
+      error,
+      isDeleteMemeModal,
+      isEditMemeModal,
+    },
     dispatch,
   ] = useReducer(memeReducer, initialMemeState);
 
@@ -106,7 +123,6 @@ function useMemeContext() {
     try {
       const res = await axios.get(`${BASE_URL}/posts/`);
       const { data } = res;
-      console.log(data);
       dispatch({ type: REDUCER_ACTIONS.MEMES_LOADED, payload: data });
     } catch (err) {
       dispatch({
@@ -134,8 +150,6 @@ function useMemeContext() {
       });
 
       const { data } = res;
-      console.log(data.message);
-      console.log("Mem utworzony");
       dispatch({ type: REDUCER_ACTION_TYPE.CREATED, payload: data.data.post });
       await fetchMemes();
     } catch (err) {
@@ -171,7 +185,6 @@ function useMemeContext() {
 
   async function likeMeme(memeId) {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
-    console.log("liking...");
     const token = localStorage.getItem("token");
     try {
       const res = await axios.post(
@@ -198,7 +211,6 @@ function useMemeContext() {
 
   async function unlikeMeme(memeId) {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
-    console.log("unliking...");
     const token = localStorage.getItem("token");
     try {
       const res = await axios.delete(`${BASE_URL}/posts/like/${memeId}`, {
@@ -221,7 +233,6 @@ function useMemeContext() {
 
   async function dislikeMeme(memeId) {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
-    console.log("disliking...");
     const token = localStorage.getItem("token");
     try {
       const res = await axios.post(
@@ -248,7 +259,6 @@ function useMemeContext() {
 
   async function undislikeMeme(memeId) {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
-    console.log("undisliking...");
     const token = localStorage.getItem("token");
     try {
       const res = await axios.delete(`${BASE_URL}/posts/dislike/${memeId}`, {
@@ -273,8 +283,33 @@ function useMemeContext() {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     try {
       const res = await axios.get(`${BASE_URL}/posts/random`);
-      // Jeśli backend zwraca {data: {post: ...}}, dostosuj poniższą linię
-      dispatch({ type: REDUCER_ACTIONS.CREATED, payload: res.data });
+      const { data } = res;
+
+      dispatch({
+        type: REDUCER_ACTIONS.FETCHED_RANDOM_MEME,
+        payload: data.data.randomPost,
+      });
+    } catch (err) {
+      dispatch({
+        type: REDUCER_ACTIONS.REJECTED,
+        payload: `Nie udało się pobrać losowego mema: ${err.message}`,
+      });
+    }
+  }
+
+  async function getMeme(memeId) {
+    dispatch({ type: REDUCER_ACTIONS.LOADING });
+    try {
+      console.log(memeId);
+      const res = await axios.get(`${BASE_URL}/posts/?id=${memeId}`);
+      const { data } = res;
+
+      console.log(data);
+
+      dispatch({
+        type: REDUCER_ACTIONS.FETCHED_MEME,
+        payload: data[0],
+      });
     } catch (err) {
       dispatch({
         type: REDUCER_ACTIONS.REJECTED,
@@ -318,6 +353,7 @@ function useMemeContext() {
     undislikeMeme,
     randomMeme,
     editMeme,
+    getMeme,
     REDUCER_ACTIONS,
   };
 }
@@ -332,6 +368,7 @@ const initMemeContextState = {
   createMeme: async () => {},
   likeMeme: async () => {},
   unlikeMeme: async () => {},
+  getMeme: async () => {},
   dislikeMeme: async () => {},
   undislikeMeme: async () => {},
   dispatch: () => {},

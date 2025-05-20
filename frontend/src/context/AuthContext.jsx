@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useReducer } from "react";
 
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api`;
 
 const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
@@ -22,6 +22,14 @@ function authReducer(state, action) {
     }
 
     case REDUCER_ACTION_TYPE.LOGGEDIN: {
+      return {
+        ...state,
+        user: action.payload.data.user,
+        isLoading: false,
+        token: action.payload.token,
+      };
+    }
+    case REDUCER_ACTION_TYPE.REGISTERED: {
       return {
         ...state,
         user: action.payload.data.user,
@@ -99,12 +107,38 @@ function useAuthContext() {
     }
   }
 
+  async function register(username, email, password) {
+    dispatch({ type: REDUCER_ACTION_TYPE.LOADING });
+
+    const userDataInput = {
+      username,
+      email,
+      password,
+    };
+
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/auth/register`,
+        userDataInput,
+      );
+
+      const { data } = response;
+      localStorage.setItem("token", data.token);
+
+      dispatch({ type: REDUCER_ACTION_TYPE.REGISTERED, payload: data });
+      return true;
+    } catch (err) {
+      console.log(err.message);
+      return false;
+    }
+  }
+
   function logout() {
     localStorage.removeItem("token");
     dispatch({ type: REDUCER_ACTION_TYPE.LOGGED_OUT });
   }
 
-  return { user, isLoading, login, token, logout };
+  return { user, isLoading, login, register, token, logout };
 }
 
 const initAuthContextState = {
@@ -112,6 +146,7 @@ const initAuthContextState = {
   isLoading: false,
   token: "",
   login: async () => {},
+  register: async () => {},
   logout: () => {},
   dispatch: () => {},
   REDUCER_ACTIONS: REDUCER_ACTION_TYPE,

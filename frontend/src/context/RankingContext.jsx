@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useCallback, useMemo, useReducer } from "react";
 
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api`;
 
 const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
@@ -88,6 +88,7 @@ function useRankingContext() {
   }, [REDUCER_ACTIONS]);
 
   const loadBestMeme = useCallback(async () => {
+    console.log("loading best meme");
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     try {
       const res = await axios.get(`${BASE_URL}/ranking/best`);
@@ -101,6 +102,7 @@ function useRankingContext() {
   }, [REDUCER_ACTIONS]);
 
   const loadWorstMeme = useCallback(async () => {
+    console.log("loadingWorst meme");
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     try {
       const res = await axios.get(`${BASE_URL}/ranking/worst`);

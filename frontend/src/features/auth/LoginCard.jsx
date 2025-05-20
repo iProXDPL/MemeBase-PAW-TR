@@ -14,7 +14,6 @@ function LoginCard() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("click");
     const success = await login(username, password);
     if (success) navigate("/");
   };

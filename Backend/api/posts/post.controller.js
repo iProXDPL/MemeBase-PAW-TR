@@ -90,7 +90,10 @@ exports.updatePost = async (req, res) => {
       return res.status(404).json({ error: "Nie podałeś id" });
     const post = await Post.findById(req.params.id).populate("author");
     if (!post) return res.status(404).json({ error: "Post nie istnieje" });
-    if (currentUser.username == post.author.username || currentUser.role == "moderator") {
+    if (
+      currentUser.username == post.author.username ||
+      currentUser.role == "moderator"
+    ) {
       if (image && post.image && post.image !== image) {
         try {
           fs.unlinkSync(post.image);
@@ -101,7 +104,9 @@ exports.updatePost = async (req, res) => {
         post.image = image;
       }
       await post.save();
-      res.status(201).json({ status:"success", message: "Post zaktualizowany" });
+      res
+        .status(201)
+        .json({ status: "success", message: "Post zaktualizowany" });
     } else {
       return res.status(401).json({ error: "Brak autoryzacji" });
     }
@@ -285,7 +290,7 @@ exports.RandomPost = async (req, res) => {
     }
     const randomIndex = Math.floor(Math.random() * posts.length);
     const randomPost = posts[randomIndex];
-    res.json(randomPost);
+    res.json({ status: "success", data: { randomPost } });
   } catch (err) {
     res.status(500).json({ error: "Błąd pobierania postów" });
   }

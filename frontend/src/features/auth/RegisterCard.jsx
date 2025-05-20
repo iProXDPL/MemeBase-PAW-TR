@@ -1,34 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
 
 function RegisterCard() {
+  const { register } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const setToken = (token) => {
-    localStorage.setItem("token", token);
-  };
-
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    const response = await fetch("http://localhost:5001/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, username, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setToken(data.token);
-      navigate("/");
-      window.location.reload();
-    } else {
-      alert("Błędne dane logowania");
-    }
+    const success = await register(username, email, password);
+    if (success) navigate("/");
   };
 
   return (
