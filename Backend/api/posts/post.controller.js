@@ -127,9 +127,9 @@ exports.deletePost = async (req, res) => {
       currentUser._id.toString() === post.author._id.toString();
 
     if (isCurrentUserAuthor || currentUser.role == "moderator") {
-      const postAuthor = await User.findById(currentUser._id);
-      await Post.findByIdAndDelete(req.params.id);
-
+      const postAuthor = await User.findOne({
+        username: post.author.username,
+      });
       if (postAuthor) {
         postAuthor.totalPosts = Math.max(0, postAuthor.totalPosts - 1);
         postAuthor.totalLikes = Math.max(
@@ -148,7 +148,7 @@ exports.deletePost = async (req, res) => {
           fs.unlinkSync(post.image);
         } catch (e) {}
       }
-
+      await Post.findByIdAndDelete(req.params.id);
       res.json({ status: "success", message: "Post usunięty" });
     } else {
       return res.status(401).json({ error: "Brak autoryzacji" });

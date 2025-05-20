@@ -24,6 +24,7 @@ function MemeUploader({ handleResetError, onFileChange }) {
       <input
         type="file"
         id="chooseFile"
+        accept="image/*"
         className="hidden"
         onChange={handleFileChange}
       />

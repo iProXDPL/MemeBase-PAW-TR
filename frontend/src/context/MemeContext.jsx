@@ -143,6 +143,13 @@ function useMemeContext() {
     formData.append("description", newMeme.title);
     formData.append("image", newMeme.file);
     try {
+      if (!newMeme.file.type.includes("image")) {
+        dispatch({
+          type: REDUCER_ACTIONS.REJECTED,
+          payload: `Niepoprawny format pliku. Wybierz obrazek`,
+        });
+        return;
+      }
       const res = await axios.post(`${BASE_URL}/posts/`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -322,6 +329,13 @@ function useMemeContext() {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     const token = localStorage.getItem("token");
     try {
+      if (updatedData.file && !updatedData.file.type.includes("image")) {
+        dispatch({
+          type: REDUCER_ACTIONS.REJECTED,
+          payload: `Niepoprawny format pliku. Wybierz obrazek`,
+        });
+        return;
+      }
       const res = await axios.put(`${BASE_URL}/posts/${memeId}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
