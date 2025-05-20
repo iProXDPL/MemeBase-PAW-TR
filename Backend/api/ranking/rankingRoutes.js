@@ -4,7 +4,7 @@
  *   name: Ranking
  *   description: Ranking użytkowników i memów
  */
-
+const swagger = require("../../swagger");
 const express = require("express");
 const router = express.Router();
 const {

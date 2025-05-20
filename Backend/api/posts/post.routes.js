@@ -4,7 +4,7 @@
  *   name: Posts
  *   description: Operacje CRUD na memach (postach)
  */
-
+const swagger = require("../../swagger");
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");

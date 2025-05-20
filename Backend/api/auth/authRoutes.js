@@ -1,3 +1,5 @@
+const swagger = require("../../swagger");
+
 /**
  * @swagger
  * tags:

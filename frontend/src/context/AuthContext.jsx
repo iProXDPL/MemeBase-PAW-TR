@@ -124,7 +124,6 @@ function useAuthContext() {
 
       const { data } = response;
       localStorage.setItem("token", data.token);
-
       dispatch({ type: REDUCER_ACTION_TYPE.REGISTERED, payload: data });
       return true;
     } catch (err) {

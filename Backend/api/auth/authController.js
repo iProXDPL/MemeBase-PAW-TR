@@ -53,7 +53,7 @@ exports.register = async (req, res) => {
     await user.save();
 
     const token = createToken(user);
-    res.status(201).json({ token, data: { user } });
+    res.status(201).json({ token: token, data: { user } });
   } catch (err) {
     res.status(500).json({ error: "Błąd rejestracji" });
   }
