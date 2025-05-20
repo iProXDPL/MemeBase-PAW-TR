@@ -1,36 +1,22 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
 
-const setToken = (token) => {
-  localStorage.setItem("token", token);
-};
+// const setToken = (token) => {
+//   localStorage.setItem("token", token);
+// };
 
 function LoginCard() {
+  const { login } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    console.log(username);
-    console.log(password);
-
-    const response = await fetch("http://localhost:5001/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setToken(data.token);
-      navigate("/");
-      window.location.reload();
-    } else {
-      alert("Błędne dane logowania");
-    }
+    console.log("click");
+    const success = await login(username, password);
+    if (success) navigate("/");
   };
 
   return (

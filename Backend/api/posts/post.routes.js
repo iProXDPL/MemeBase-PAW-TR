@@ -5,22 +5,45 @@
  *   description: Operacje CRUD na memach (postach)
  */
 
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
 
+const upload = multer({ storage });
+/**
+ * @swagger
+ * /api/posts/ping:
+ *   get:
+ *     summary: Sprawdzenie działania endpointu
+ *     tags: [Posts]
+ *     responses:
+ *       200:
+ *         description: Odpowiedź testowa
+ */
 
-const express = require('express');
-const router = express.Router(); 
-
-router.get('/ping', (req, res) => {
-  res.json({ message: 'Działa! asdbgjaervqwclqw we w ' });
+router.get("/ping", (req, res) => {
+  res.json({ message: "Działa! asdbgjaervqwclqw we w " });
 });
 
 const {
-  getAllPosts,
-  getPostById,
+  getPosts,
   createPost,
   updatePost,
-  deletePost
-} = require('./post.controller');
+  deletePost,
+  addLike,
+  addDislike,
+  Unlike,
+  UnDislike,
+  RandomPost,
+} = require("./post.controller");
 
 /**
  * @swagger
@@ -35,39 +58,12 @@ const {
  *           application/json:
  *             example:
  *               - _id: "6610d20d8a22c928e8fe67a1"
- *                 title: "Kiedy wszystko działa"
- *                 imageUrl: "https://i.imgur.com/example.jpg"
+ *                 description: "Kiedy wszystko działa"
+ *                 image: "uploads/mem.jpg"
  *                 author: "660aaa123bbb456ccc789ddd"
  *                 createdAt: "2024-03-29T19:00:00.000Z"
  */
-router.get('/', getAllPosts);
-
-/**
- * @swagger
- * /api/posts/{id}:
- *   get:
- *     summary: Pobierz post po ID
- *     tags: [Posts]
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         example: "6610d20d8a22c928e8fe67a1"
- *     responses:
- *       200:
- *         description: Jeden post
- *         content:
- *           application/json:
- *             example:
- *               _id: "6610d20d8a22c928e8fe67a1"
- *               title: "Zabawny mem"
- *               imageUrl: "https://i.imgur.com/example.jpg"
- *               author: "660aaa123bbb456ccc789ddd"
- *               createdAt: "2024-03-29T19:00:00.000Z"
- */
-router.get('/:id', getPostById);
+router.get("/", getPosts);
 
 /**
  * @swagger
@@ -78,17 +74,20 @@ router.get('/:id', getPostById);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
- *           example:
- *             title: "Mój mem dnia"
- *             imageUrl: "https://i.imgur.com/mem.jpg"
- *             author: "660aaa123bbb456ccc789ddd"
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               description:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Post utworzony
  */
-router.post('/', createPost);
-
+router.post("/", upload.single("image"), createPost);
 
 /**
  * @swagger
@@ -102,20 +101,23 @@ router.post('/', createPost);
  *         required: true
  *         schema:
  *           type: string
- *         example: "6610d20d8a22c928e8fe67a1"
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
- *           example:
- *             title: "Nowy tytuł mema"
- *             imageUrl: "https://i.imgur.com/nowy.jpg"
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               description:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Post zaktualizowany
  */
-router.put('/:id', updatePost);
-
+router.put("/:id", upload.single("image"), updatePost);
 
 /**
  * @swagger
@@ -129,11 +131,94 @@ router.put('/:id', updatePost);
  *         required: true
  *         schema:
  *           type: string
- *         example: "6610d20d8a22c928e8fe67a1"
  *     responses:
  *       200:
  *         description: Post usunięty
  */
-router.delete('/:id', deletePost);
+router.delete("/:id", deletePost);
+
+/**
+ * @swagger
+ * /api/posts/like/{id}:
+ *   post:
+ *     summary: Dodaj polubienie do posta
+ *     tags: [Posts]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Polubienie dodane
+ */
+router.post("/like/:id", addLike);
+
+/**
+ * @swagger
+ * /api/posts/like/{id}:
+ *   delete:
+ *     summary: Usuń polubienie z posta
+ *     tags: [Posts]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Polubienie usunięte
+ */
+router.delete("/like/:id", Unlike);
+
+/**
+ * @swagger
+ * /api/posts/dislike/{id}:
+ *   post:
+ *     summary: Dodaj dislajka do posta
+ *     tags: [Posts]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dislajk dodany
+ */
+router.post("/dislike/:id", addDislike);
+
+/**
+ * @swagger
+ * /api/posts/dislike/{id}:
+ *   delete:
+ *     summary: Usuń dislajka z posta
+ *     tags: [Posts]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dislajk usunięty
+ */
+router.delete("/dislike/:id", UnDislike);
+
+/**
+ * @swagger
+ * /api/posts/ping:
+ *   get:
+ *     summary: Sprawdzenie działania endpointu
+ *     tags: [Posts]
+ *     responses:
+ *       200:
+ *         description: Odpowiedź testowa
+ */
+router.get("/random", RandomPost);
 
 module.exports = router;
