@@ -6,7 +6,7 @@ import { MemeContext } from "../../context/MemeContext";
 function DeleteMemeModal() {
   const { dispatch, REDUCER_ACTIONS, deleteMeme, currentMeme } =
     useContext(MemeContext);
-  console.log(currentMeme);
+  //console.log(currentMeme);
   return (
     <Modal
       title="Usuń post"

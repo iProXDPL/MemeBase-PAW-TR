@@ -13,12 +13,13 @@ const initialAuthState = {
   user: {},
   token: localStorage.getItem("token") || "",
   isLoading: false,
+  error: null,
 };
 
 function authReducer(state, action) {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.LOADING: {
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, error: null };
     }
 
     case REDUCER_ACTION_TYPE.LOGGEDIN: {
@@ -27,6 +28,7 @@ function authReducer(state, action) {
         user: action.payload.data.user,
         isLoading: false,
         token: action.payload.token,
+        error: null,
       };
     }
     case REDUCER_ACTION_TYPE.REGISTERED: {
@@ -35,6 +37,7 @@ function authReducer(state, action) {
         user: action.payload.data.user,
         isLoading: false,
         token: action.payload.token,
+        error: null,
       };
     }
 
@@ -44,13 +47,22 @@ function authReducer(state, action) {
         user: {},
         token: "",
         isLoading: false,
+        error: null,
+      };
+    }
+
+    case "ERROR": {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       };
     }
   }
 }
 
 function useAuthContext() {
-  const [{ user, isLoading, token }, dispatch] = useReducer(
+  const [{ user, isLoading, token, error }, dispatch] = useReducer(
     authReducer,
     initialAuthState,
   );
@@ -84,7 +96,6 @@ function useAuthContext() {
 
   async function login(username, password) {
     dispatch({ type: REDUCER_ACTION_TYPE.LOADING });
-    console.log("logowanie");
     const userDataInput = {
       username,
       password,
@@ -102,7 +113,9 @@ function useAuthContext() {
       dispatch({ type: REDUCER_ACTION_TYPE.LOGGEDIN, payload: data });
       return true;
     } catch (err) {
-      console.log(err.message);
+      const errorMsg =
+        err.response?.data?.error || "Błąd logowania. Spróbuj ponownie.";
+      dispatch({ type: "ERROR", payload: errorMsg });
       return false;
     }
   }
@@ -127,7 +140,9 @@ function useAuthContext() {
       dispatch({ type: REDUCER_ACTION_TYPE.REGISTERED, payload: data });
       return true;
     } catch (err) {
-      console.log(err.message);
+      const errorMsg =
+        err.response?.data?.error || "Błąd rejestracji. Spróbuj ponownie.";
+      dispatch({ type: "ERROR", payload: errorMsg });
       return false;
     }
   }
@@ -137,7 +152,7 @@ function useAuthContext() {
     dispatch({ type: REDUCER_ACTION_TYPE.LOGGED_OUT });
   }
 
-  return { user, isLoading, login, register, token, logout };
+  return { user, isLoading, login, register, token, logout, error };
 }
 
 const initAuthContextState = {

@@ -79,7 +79,7 @@ function useRankingContext() {
     try {
       const res = await axios.get(`${BASE_URL}/ranking/`);
       const { data } = res;
-      console.log(data);
+      //console.log(data);
 
       dispatch({ type: REDUCER_ACTIONS.LOADED_BEST_USERS, payload: data });
     } catch (err) {
@@ -94,7 +94,7 @@ function useRankingContext() {
       const res = await axios.get(`${BASE_URL}/ranking/best`);
       const { data } = res;
 
-      console.log(data);
+      //console.log(data);
       dispatch({ type: REDUCER_ACTIONS.LOADED_BEST_MEME, payload: data });
     } catch (err) {
       console.log(err.message);
@@ -108,7 +108,7 @@ function useRankingContext() {
       const res = await axios.get(`${BASE_URL}/ranking/worst`);
       const { data } = res;
 
-      console.log(data);
+      //console.log(data);
       dispatch({ type: REDUCER_ACTIONS.LOADED_WORST_MEME, payload: data });
     } catch (err) {
       console.log(err.message);

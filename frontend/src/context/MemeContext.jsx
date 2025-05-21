@@ -307,11 +307,11 @@ function useMemeContext() {
   async function getMeme(memeId) {
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     try {
-      console.log(memeId);
+      //console.log(memeId);
       const res = await axios.get(`${BASE_URL}/posts/?id=${memeId}`);
       const { data } = res;
 
-      console.log(data);
+      //console.log(data);
 
       dispatch({
         type: REDUCER_ACTIONS.FETCHED_MEME,

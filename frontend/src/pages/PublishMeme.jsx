@@ -1,19 +1,25 @@
 import Card from "../ui/Card";
 import SectionUndelinedTitle from "../ui/SectionUndelinedTitle";
 import Button from "../ui/Button";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MemeContext } from "../context/MemeContext";
 import MemeUploader from "../features/memes/MemeUploader";
 
 function PublishMeme() {
-  const { createMeme, isLoading, error } = useContext(MemeContext);
+  const { createMeme, isLoading, error, dispatch, REDUCER_ACTIONS } =
+    useContext(MemeContext);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState("");
   const [isFileError, setIsFileError] = useState(false);
 
+  useEffect(() => {
+    dispatch({ type: REDUCER_ACTIONS.REJECTED, payload: null });
+  }, [dispatch, REDUCER_ACTIONS]);
+
   function handleSubmit(e) {
     e.preventDefault();
+    dispatch({ type: REDUCER_ACTIONS.REJECTED, payload: null });
     if (!file && !title) {
       setIsFileError(true);
       setTitleError("Tytuł nie został wprowadzony");
@@ -24,7 +30,7 @@ function PublishMeme() {
 
     setIsFileError(false);
     setTitleError("");
-    console.log(`title: ${title}`);
+    //console.log(`title: ${title}`);
 
     createMeme({ title, file });
 

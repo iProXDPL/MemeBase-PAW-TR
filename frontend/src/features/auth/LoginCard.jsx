@@ -2,12 +2,8 @@ import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 
-// const setToken = (token) => {
-//   localStorage.setItem("token", token);
-// };
-
 function LoginCard() {
-  const { login } = useContext(AuthContext);
+  const { login, error, isLoading } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -51,15 +47,13 @@ function LoginCard() {
               Zarejestruj się
             </NavLink>
           </div>
-          {/*
-            <div className="text-sm text-gray-600 mb-4">
-              <span className="text-gray-500">Problemy z logowaniem? </span>
-              <a href="#" className="text-blue-500">Zmiana hasła</a>
-            </div>
-            */}
-          <button className="w-full rounded-lg bg-purple-600 py-2 text-white hover:bg-purple-700">
+          <button
+            className="w-full rounded-lg bg-purple-600 py-2 text-white hover:bg-purple-700"
+            disabled={isLoading}
+          >
             Zaloguj się
           </button>
+          {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
         </form>
       </div>
     </div>

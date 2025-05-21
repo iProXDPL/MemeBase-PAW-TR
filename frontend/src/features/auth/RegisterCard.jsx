@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 
 function RegisterCard() {
-  const { register } = useContext(AuthContext);
+  const { register, error, isLoading } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -68,9 +68,13 @@ function RegisterCard() {
               Zaloguj się
             </NavLink>
           </div>
-          <button className="w-full rounded-lg bg-purple-600 py-2 text-white hover:bg-purple-700">
+          <button
+            disabled={isLoading}
+            className="w-full rounded-lg bg-purple-600 py-2 text-white hover:bg-purple-700"
+          >
             Zarejestruj się
           </button>
+          {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
         </form>
       </div>
     </div>

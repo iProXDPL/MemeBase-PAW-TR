@@ -10,8 +10,9 @@ function RandomMeme() {
   useEffect(() => {
     randomMeme();
   }, []);
-
-  console.log(currentMeme);
+  if (!currentMeme || !currentMeme._id) {
+    return <div className="py-8 text-center text-gray-500">Brak postów</div>;
+  }
   return (
     <div className="flex flex-col gap-6 px-6 py-8 sm:gap-4">
       {isLoading && <div>Ładowanie...</div>}
