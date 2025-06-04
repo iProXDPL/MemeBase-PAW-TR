@@ -38,18 +38,41 @@ exports.getPosts = async (req, res) => {
       }
       return res.json(posts);
     } else {
-      const posts = await Post.find()
-        .populate("author")
-        .sort({ createdAt: -1 });
-      if (posts.length === 0) {
-        return res.status(200).json([]);
+      const page = parseInt(req.query.page);
+      const limit = parseInt(req.query.limit);
+
+      if (page && limit) {
+        const skip = (page - 1) * limit;
+        const posts = await Post.find()
+          .populate("author")
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(limit);
+        const total = await Post.countDocuments();
+        return res.json({
+          posts,
+          pagination: {
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+            totalItems: total,
+          },
+        });
+      } else {
+        const posts = await Post.find()
+          .populate("author")
+          .sort({ createdAt: -1 });
+        if (posts.length === 0) {
+          return res.status(200).json([]);
+        }
+        res.json(posts);
       }
-      res.json(posts);
     }
   } catch (err) {
     res.status(500).json({ error: "Błąd pobierania postów" });
   }
 };
+
 
 exports.createPost = async (req, res) => {
   try {
