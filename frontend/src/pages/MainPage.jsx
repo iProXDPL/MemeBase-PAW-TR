@@ -26,7 +26,7 @@ function MainPage() {
           <MemeCard
             key={meme._id}
             meme={meme}
-            memeUrl={`http://localhost:5001/${meme.image}`}
+            memeUrl={meme.image}
             textMeme={meme.description}
           />
         ))
