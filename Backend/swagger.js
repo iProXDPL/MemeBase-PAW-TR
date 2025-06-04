@@ -1,20 +1,29 @@
-const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerJSDoc = require("swagger-jsdoc");
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'MemeBase API',
-      version: '1.0.0',
-      description: 'API do obsługi użytkowników i postów (memów)',
+      title: "MemeBase API",
+      version: "1.0.0",
+      description: "API do obsługi użytkowników i postów (memów)",
     },
-    servers: [
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
       {
-        url: 'http://localhost:5001',
+        bearerAuth: [],
       },
     ],
   },
-  apis: ['./api/**/*.js'], 
+  apis: ["./api/**/*.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

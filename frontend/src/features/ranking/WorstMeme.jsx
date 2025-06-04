@@ -26,7 +26,8 @@ function WorstMeme() {
       <MemeCard
         meme={worstMeme}
         textMeme={worstMeme.description}
-        memeUrl={`http://localhost:5001/${worstMeme.image}`}
+        memeUrl={worstMeme.image}
+        onInteraction={loadWorstMeme}
       />
     </RankingWrapper>
   );

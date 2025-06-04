@@ -14,7 +14,7 @@ function RankingTable() {
     [loadBestUsers],
   );
 
-  console.log(users);
+  //console.log(users);
   const { users: usersList } = users;
   if (!usersList) return;
 

@@ -28,7 +28,8 @@ function BestMeme() {
       <MemeCard
         meme={bestMeme}
         textMeme={bestMeme.description}
-        memeUrl={`http://localhost:5001/${bestMeme.image}`}
+        memeUrl={bestMeme.image}
+        onInteraction={loadBestMeme}
       />
     </RankingWrapper>
   );

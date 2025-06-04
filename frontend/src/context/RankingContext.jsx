@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useCallback, useMemo, useReducer } from "react";
 
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api`;
 
 const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
@@ -79,7 +79,7 @@ function useRankingContext() {
     try {
       const res = await axios.get(`${BASE_URL}/ranking/`);
       const { data } = res;
-      console.log(data);
+      //console.log(data);
 
       dispatch({ type: REDUCER_ACTIONS.LOADED_BEST_USERS, payload: data });
     } catch (err) {
@@ -88,12 +88,13 @@ function useRankingContext() {
   }, [REDUCER_ACTIONS]);
 
   const loadBestMeme = useCallback(async () => {
+    console.log("loading best meme");
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     try {
       const res = await axios.get(`${BASE_URL}/ranking/best`);
       const { data } = res;
 
-      console.log(data);
+      //console.log(data);
       dispatch({ type: REDUCER_ACTIONS.LOADED_BEST_MEME, payload: data });
     } catch (err) {
       console.log(err.message);
@@ -101,12 +102,13 @@ function useRankingContext() {
   }, [REDUCER_ACTIONS]);
 
   const loadWorstMeme = useCallback(async () => {
+    console.log("loadingWorst meme");
     dispatch({ type: REDUCER_ACTIONS.LOADING });
     try {
       const res = await axios.get(`${BASE_URL}/ranking/worst`);
       const { data } = res;
 
-      console.log(data);
+      //console.log(data);
       dispatch({ type: REDUCER_ACTIONS.LOADED_WORST_MEME, payload: data });
     } catch (err) {
       console.log(err.message);

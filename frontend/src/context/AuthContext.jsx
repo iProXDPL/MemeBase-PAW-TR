@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useReducer } from "react";
 
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api`;
 
 const REDUCER_ACTION_TYPE = {
   LOADING: "LOADING",
@@ -13,12 +13,13 @@ const initialAuthState = {
   user: {},
   token: localStorage.getItem("token") || "",
   isLoading: false,
+  error: null,
 };
 
 function authReducer(state, action) {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.LOADING: {
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, error: null };
     }
 
     case REDUCER_ACTION_TYPE.LOGGEDIN: {
@@ -27,6 +28,16 @@ function authReducer(state, action) {
         user: action.payload.data.user,
         isLoading: false,
         token: action.payload.token,
+        error: null,
+      };
+    }
+    case REDUCER_ACTION_TYPE.REGISTERED: {
+      return {
+        ...state,
+        user: action.payload.data.user,
+        isLoading: false,
+        token: action.payload.token,
+        error: null,
       };
     }
 
@@ -36,13 +47,22 @@ function authReducer(state, action) {
         user: {},
         token: "",
         isLoading: false,
+        error: null,
+      };
+    }
+
+    case "ERROR": {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       };
     }
   }
 }
 
 function useAuthContext() {
-  const [{ user, isLoading, token }, dispatch] = useReducer(
+  const [{ user, isLoading, token, error }, dispatch] = useReducer(
     authReducer,
     initialAuthState,
   );
@@ -76,7 +96,6 @@ function useAuthContext() {
 
   async function login(username, password) {
     dispatch({ type: REDUCER_ACTION_TYPE.LOADING });
-    console.log("logowanie");
     const userDataInput = {
       username,
       password,
@@ -94,7 +113,36 @@ function useAuthContext() {
       dispatch({ type: REDUCER_ACTION_TYPE.LOGGEDIN, payload: data });
       return true;
     } catch (err) {
-      console.log(err.message);
+      const errorMsg =
+        err.response?.data?.error || "Błąd logowania. Spróbuj ponownie.";
+      dispatch({ type: "ERROR", payload: errorMsg });
+      return false;
+    }
+  }
+
+  async function register(username, email, password) {
+    dispatch({ type: REDUCER_ACTION_TYPE.LOADING });
+
+    const userDataInput = {
+      username,
+      email,
+      password,
+    };
+
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/auth/register`,
+        userDataInput,
+      );
+
+      const { data } = response;
+      localStorage.setItem("token", data.token);
+      dispatch({ type: REDUCER_ACTION_TYPE.REGISTERED, payload: data });
+      return true;
+    } catch (err) {
+      const errorMsg =
+        err.response?.data?.error || "Błąd rejestracji. Spróbuj ponownie.";
+      dispatch({ type: "ERROR", payload: errorMsg });
       return false;
     }
   }
@@ -104,7 +152,7 @@ function useAuthContext() {
     dispatch({ type: REDUCER_ACTION_TYPE.LOGGED_OUT });
   }
 
-  return { user, isLoading, login, token, logout };
+  return { user, isLoading, login, register, token, logout, error };
 }
 
 const initAuthContextState = {
@@ -112,6 +160,7 @@ const initAuthContextState = {
   isLoading: false,
   token: "",
   login: async () => {},
+  register: async () => {},
   logout: () => {},
   dispatch: () => {},
   REDUCER_ACTIONS: REDUCER_ACTION_TYPE,

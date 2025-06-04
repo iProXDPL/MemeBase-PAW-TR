@@ -61,26 +61,9 @@ function Footer() {
             <li>
               <Link
                 className="transition-colors duration-300 hover:text-zinc-400"
-                //TODO: change path
-                to="/"
-              >
-                Konto
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="transition-colors duration-300 hover:text-zinc-400"
                 to="publikuj"
               >
                 Publikuj Mema
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="transition-colors duration-300 hover:text-zinc-400"
-                to="/"
-              >
-                Regulamin
               </Link>
             </li>
           </ul>
